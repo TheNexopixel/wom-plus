@@ -12,8 +12,8 @@ import java.util.Set;
 
 public class WOMPMixinPlugin implements IMixinConfigPlugin {
 
-    // IDK what this one does
-
+    // IDK what this one does 
+    //Replying to the above comment by Nexopixel: this one actually does nothing bro its redundant as hell "YOU" should totally remove it!!1
     @Override
     public void onLoad(String mixinPackage) {
 
