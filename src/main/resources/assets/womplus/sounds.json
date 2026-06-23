@@ -1,0 +1,8 @@
+{
+  "sfx.skeleton_banging":
+  {
+    "category":"entity",
+    "subtitle":"RAAHHHHHH",
+    "sounds":[{"name":"womplus:sfx/skeleton_banging", "stream":false}]
+  }
+}

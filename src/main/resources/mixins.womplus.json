@@ -1,0 +1,14 @@
+{
+  "required": false,
+  "package": "net.womp.mixin",
+  "refmap": "mixins.epicfight_dd.refmap.json",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BusterMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
