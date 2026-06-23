@@ -5,6 +5,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
+
 repositories {
     maven {
         url "https://cursemaven.com"
@@ -35,6 +36,12 @@ base {
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+mixin {
+    // MixinGradle Settings
+    add sourceSets.main, 'mixins.womplus.refmap.json'
+    config 'mixins.womplus.json'
 }
 
 minecraft {
