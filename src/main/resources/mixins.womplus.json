@@ -1,7 +1,7 @@
 {
   "required": false,
   "package": "net.womp.mixin",
-  "refmap": "mixins.womp.refmap.json",
+  "refmap": "mixins.womplus.refmap.json",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
