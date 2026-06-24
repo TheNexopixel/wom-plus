@@ -82,7 +82,7 @@ public class WOMPCapabilites {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .canBePlacedOffhand(true)
                     .innateSkill(CapabilityItem.Styles.TWO_HAND, ip -> WOMPSkills.ANNIHILATE)
-                    .innateSkill(CapabilityItem.Styles.ONE_HAND, ip -> EpicFightSkills.STEEL_WHIRLWIND)
+                    .innateSkill(CapabilityItem.Styles.ONE_HAND, ip -> WOMPSkills.COMET)
 
                     .newStyleCombo(CapabilityItem.Styles.TWO_HAND,
                             WOMPAnimations.GREATAXE_DUAL_AUTO1,
@@ -103,6 +103,7 @@ public class WOMPCapabilites {
                     .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.IDLE, WOMPAnimations.GREATAXE_ONEHAND_IDLE)
                     .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.WALK, WOMPAnimations.GREATAXE_ONEHAND_WALK)
                     .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.RUN, WOMPAnimations.GREATAXE_ONEHAND_RUN)
+                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.BLOCK, WOMPAnimations.GREATAXE_ONEHAND_GUARD)
 
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, WOMPAnimations.GREATAXE_DUAL_IDLE)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)

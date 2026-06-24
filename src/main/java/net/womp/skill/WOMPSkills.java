@@ -22,7 +22,7 @@ import java.util.Set;
 @Mod.EventBusSubscriber(modid = WomPLUS.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class WOMPSkills {
     public static Skill EVIL_BEAAAAMMMM;
-    public static Skill EVIL_BATTOJUTSO;
+    public static Skill COMET;
     public static Skill ANNIHILATE;
     public static Skill RAAAHHH;
 
@@ -56,6 +56,15 @@ public class WOMPSkills {
                 .addProperty(AnimationProperty.AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT
                         .create())).addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         ANNIHILATE = annihilate;
+
+        WeaponInnateSkill comet = modRegistry.build("comet", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder()
+                .setAnimations(WOMPAnimations.COMET)
+                .setCategory(SkillCategories.WEAPON_INNATE));
+        comet.newProperty()
+                .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(20.0F))
+                .addProperty(AnimationProperty.AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT
+                        .create())).addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        COMET = comet;
 
         RAAAHHH = modRegistry.build("rahhh", RAHHHHH::new,
                 RAHHHHH.createWeaponInnateBuilder()

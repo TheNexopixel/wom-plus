@@ -12,7 +12,7 @@ public class WOMPWeaponCategoryMapper {
     private static final Map<WOMPWeaponCategories, WeaponCategory> categoryMap = new HashMap<>();
 
     static {
-        categoryMap.put(WOMPWeaponCategories.EVIL_TACHI, CapabilityItem.WeaponCategories.TACHI);
+    //    categoryMap.put(WOMPWeaponCategories.EVIL_TACHI, CapabilityItem.WeaponCategories.TACHI);
         categoryMap.put(WOMPWeaponCategories.WOM_GREATAXE, CapabilityItem.WeaponCategories.GREATSWORD);
     }
     public static CapabilityItem.Builder apply(Item item, WOMPWeaponCategories category) {

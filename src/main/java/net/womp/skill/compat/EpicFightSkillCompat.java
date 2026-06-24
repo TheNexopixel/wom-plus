@@ -12,6 +12,7 @@ import net.womp.world.capabilities.item.WOMPWeaponCategories;
 import reascer.wom.world.item.WOMItems;
 import yesman.epicfight.api.client.forgeevent.WeaponCategoryIconRegisterEvent;
 import yesman.epicfight.api.forgeevent.SkillBuildEvent;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.skill.guard.ParryingSkill;
 import yesman.epicfight.skill.passive.SwordmasterSkill;
@@ -29,7 +30,11 @@ public class EpicFightSkillCompat {
         if (event.getRegistryName().equals(ResourceLocation.fromNamespaceAndPath("epicfight", "guard"))) {
             GuardSkill.Builder builder = event.getSkillBuilder();
             builder.addGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED);
+            .addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED);
+
+            builder.addGuardMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT)
+                    .addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> Animations.GREATSWORD_GUARD_BREAK);
+
         }
     }
     @SubscribeEvent
@@ -44,6 +49,9 @@ public class EpicFightSkillCompat {
     public static void onParrySkillCreate(SkillBuildEvent.ModRegistryWorker.SkillCreateEvent<ParryingSkill.Builder> event) {
         if (event.getRegistryName().equals(ResourceLocation.fromNamespaceAndPath("epicfight", "parrying"))) {
             GuardSkill.Builder builder = event.getSkillBuilder();
+            builder.addGuardMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT)
+                    .addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> Animations.GREATSWORD_GUARD_BREAK);
+
             builder.addGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT)
                     .addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED)
                     .addAdvancedGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> List.of(WOMPAnimations.EVIL_ODACHI_PARRY1, WOMPAnimations.EVIL_ODACHI_PARRY2));
@@ -53,6 +61,7 @@ public class EpicFightSkillCompat {
     @OnlyIn(Dist.CLIENT)
     public static void onIconCreate(WeaponCategoryIconRegisterEvent icon){
         icon.registerCategory(WOMPWeaponCategories.EVIL_TACHI, new ItemStack(WOMItems.EVIL_TACHI.get()));
+        icon.registerCategory(WOMPWeaponCategories.WOM_GREATAXE, new ItemStack(WOMItems.IRON_GREATAXE.get()));
 
     }
 

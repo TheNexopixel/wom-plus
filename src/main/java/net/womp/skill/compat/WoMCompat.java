@@ -12,6 +12,7 @@ import reascer.wom.gameasset.WOMSkills;
 import reascer.wom.world.item.WOMItems;
 import yesman.epicfight.api.client.forgeevent.WeaponCategoryIconRegisterEvent;
 import yesman.epicfight.compat.ICompatModule;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -74,6 +75,15 @@ public class WoMCompat implements ICompatModule {
                 WOMPAnimations.EVIL_ODACHI_NEUTRALIZED);
         advancedGuardMotions.put(WOMPWeaponCategories.EVIL_TACHI, (itemCap, playerpatch) ->
                 WOMPAnimations.EVIL_ODACHI_COUNTER);
+
+        guardMotions.put(WOMPWeaponCategories.WOM_GREATAXE, (item, player) ->
+                WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT);
+        guardBreakMotions.put(WOMPWeaponCategories.WOM_GREATAXE, (item, player) ->
+                Animations.GREATSWORD_GUARD_BREAK);
+        advancedGuardMotions.put(WOMPWeaponCategories.WOM_GREATAXE, (itemCap, playerpatch) ->
+                WOMPAnimations.GREATAXE_ONEHAND_GUARD_COUNTER);
+
+
         Field temp;
         Map<WeaponCategory, BiFunction<CapabilityItem, PlayerPatch<?>, ?>> target;
         temp = GuardSkill.class.getDeclaredField("guardMotions");

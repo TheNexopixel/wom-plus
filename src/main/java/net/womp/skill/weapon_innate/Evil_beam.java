@@ -15,18 +15,20 @@ public class Evil_beam extends SimpleWeaponInnateSkill {
         super((Builder) builder);
     }
 
+    private boolean injectedStack = false;
+
     @Override
     public boolean canExecute(SkillContainer container) {
         PlayerPatch<?> player = container.getExecutor();
 
+        if (player.getOriginal().isSprinting()) {
 
-        if (!player.getOriginal().isSprinting()) {
-            return false;
-        }
+            if (container.getStack() <= 0) {
+                container.setStack(1);
+                injectedStack = true;
+            }
 
-
-        if (player.getStamina() < STAMINA_COST) {
-            return false;
+            return player.getStamina() >= STAMINA_COST;
         }
 
         return super.canExecute(container);
@@ -38,21 +40,26 @@ public class Evil_beam extends SimpleWeaponInnateSkill {
 
         if (player.getOriginal().isSprinting()) {
 
-            if (player.getStamina() < STAMINA_COST) {
-                return;
-            }
-
-
             player.setStamina(player.getStamina() - STAMINA_COST);
-
 
             player.playAnimationSynchronized(
                     WOMPAnimations.EVIL_ODACHI_BATTOJUTSO,
                     0.0F
             );
 
+            if (!injectedStack) {
+                container.setStack(
+                        Math.min(
+                                container.getStack() + 1,
+                                container.getSkill().getMaxStack()
+                        )
+                );
+            }
+
+            injectedStack = false;
             return;
         }
+
         super.executeOnServer(container, args);
     }
 }
