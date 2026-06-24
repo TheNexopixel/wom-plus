@@ -24,7 +24,7 @@ public class Evil_beam extends SimpleWeaponInnateSkill {
         if (player.getOriginal().isSprinting()) {
 
             if (container.getStack() <= 0 && player.getStamina() >= STAMINA_COST) {
-                container.setStack(1);
+                container.setStack(container.getStack() +1);
                 injectedStack = true;
             }
 

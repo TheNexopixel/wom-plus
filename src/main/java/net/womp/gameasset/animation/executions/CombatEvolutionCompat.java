@@ -1,17 +1,12 @@
 package net.womp.gameasset.animation.executions;
 
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
 import net.shelmarow.combat_evolution.api.event.RegisterCustomExecutionEvent;
 import reascer.wom.main.WeaponsOfMinecraft;
-import reascer.wom.world.item.WOMItems;
+import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import yesman.epicfight.compat.ICompatModule;
-import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
-import yesman.epicfight.world.item.GloveItem;
 
 public class  CombatEvolutionCompat implements ICompatModule {
 
@@ -28,6 +23,15 @@ public class  CombatEvolutionCompat implements ICompatModule {
                     WOMPExecutionTypes.GREATAXE_DUAL);
             event.registerExecutionByItem(WeaponsOfMinecraft.identifier("netherite_greataxe"), CapabilityItem.Styles.TWO_HAND,
                     WOMPExecutionTypes.GREATAXE_DUAL);
+
+        event.registerExecutionByItem(WeaponsOfMinecraft.identifier("netherite_greataxe"), CapabilityItem.Styles.ONE_HAND,
+                ExecutionTypeManager.COLOSSALSWORD_TYPE);
+        event.registerExecutionByItem(WeaponsOfMinecraft.identifier("diamond_greataxe"), CapabilityItem.Styles.ONE_HAND,
+                ExecutionTypeManager.COLOSSALSWORD_TYPE);
+        event.registerExecutionByItem(WeaponsOfMinecraft.identifier("golden_greataxe"), CapabilityItem.Styles.ONE_HAND,
+                ExecutionTypeManager.COLOSSALSWORD_TYPE);
+        event.registerExecutionByItem(WeaponsOfMinecraft.identifier("iron_greataxe"), CapabilityItem.Styles.ONE_HAND,
+                ExecutionTypeManager.COLOSSALSWORD_TYPE);
 
 
 

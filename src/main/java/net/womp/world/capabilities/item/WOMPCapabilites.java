@@ -97,7 +97,7 @@ public class WOMPCapabilites {
                             WOMPAnimations.GREATAXE_ONEHAND_AUTO2,
                             WOMPAnimations.GREATAXE_ONEHAND_AUTO3,
                             WOMPAnimations.GREATAXE_ONEHAND_DASH,
-                            Animations.GREATSWORD_AIR_SLASH)
+                            WOMPAnimations.GREATAXE_ONEHAND_AIRSLASH_NEW)
 
 
                     .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.IDLE, WOMPAnimations.GREATAXE_ONEHAND_IDLE)

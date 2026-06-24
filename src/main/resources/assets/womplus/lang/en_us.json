@@ -6,5 +6,7 @@
   "creativetab.womplus": "Weapons of Miracles Extended",
   "effect.womplus.impregnability":"RAAHHHRR",
   "skill.womplus.rahhh":"RRAAAAHHR",
+  "skill.womplus.comet":"Comet",
+  "skill.womplus.comet.tooltip":"Soar into the air and strike down upon your opponents with a devastating hit.",
   "skill.womplus.rahhh.tooltip":"\n\nGives effect that increases: \n  - Defence \n  - Attack Speed by 10% \n  - Stamina Regen \n  - Impact"
 }
