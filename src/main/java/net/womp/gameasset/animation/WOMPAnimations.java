@@ -82,6 +82,7 @@ public class WOMPAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AUTO1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AUTO2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AUTO3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_DASH;
 
     public static AnimationManager.AnimationAccessor<StaticAnimation> GREATAXE_DUAL_IDLE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> GREATAXE_DUAL_WALK;
@@ -149,18 +150,25 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
 
         GREATAXE_ONEHAND_AUTO3 = builder.nextAccessor("biped/combat/greataxe_onehand_auto3", (accessor) ->
-                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.43f, 0.6f, 0.9F, null, biped.get().toolR, accessor, biped)
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.46f, 0.65f, 0.9F, WOMPCollider.GREATAXE_BIG, biped.get().rootJoint, accessor, biped)
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(4.4f))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(
-                                        0.52F,
+                                        0.48F,
                                         Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
                                         AnimationEvent.Side.CLIENT
-                                ).params(new Vec3f(-0.5F, 0.25F, -1.0F), Armatures.BIPED.get().toolR, 2.0D, 2.0F))
-                        .addState(EntityState.TURNING_LOCKED, true)
+                                ).params(new Vec3f(-0.0F, 0.25F, -4.0F), Armatures.BIPED.get().rootJoint, 2.0D, 2.0F))
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        GREATAXE_ONEHAND_DASH = builder.nextAccessor("biped/combat/greataxe_onehand_dash", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.2f, 0.44f, 0.8F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.3f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
 
         GREATAXE_DUAL_AUTO1 = builder.nextAccessor("biped/combat/greataxe_dual_auto1", (accessor) ->
@@ -209,7 +217,7 @@ public class WOMPAnimations {
                                         1.45F,
                                         Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
                                         AnimationEvent.Side.CLIENT
-                                ).params(new Vec3f(-0.0F, 0.25F, -2.0F), Armatures.BIPED.get().rootJoint,0.5D, 1.0F))
+                                ).params(new Vec3f(-0.0F, 0.25F, -3.0F), Armatures.BIPED.get().rootJoint,1.0D, 1.0F))
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE,true)
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
 

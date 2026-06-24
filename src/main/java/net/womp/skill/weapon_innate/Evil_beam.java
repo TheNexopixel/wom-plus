@@ -1,8 +1,6 @@
 package net.womp.skill.weapon_innate;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.GameType;
 import net.womp.gameasset.animation.WOMPAnimations;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
@@ -38,22 +36,23 @@ public class Evil_beam extends SimpleWeaponInnateSkill {
     public void executeOnServer(SkillContainer container, FriendlyByteBuf args) {
         PlayerPatch<?> player = container.getServerExecutor();
 
+        if (player.getOriginal().isSprinting()) {
+
+            if (player.getStamina() < STAMINA_COST) {
+                return;
+            }
 
 
-        if (!player.getOriginal().isSprinting()) {
+            player.setStamina(player.getStamina() - STAMINA_COST);
+
+
+            player.playAnimationSynchronized(
+                    WOMPAnimations.EVIL_ODACHI_BATTOJUTSO,
+                    0.0F
+            );
+
             return;
         }
-
-        if (player.getStamina() < STAMINA_COST) {
-            return;
-        }
-
-        player.playAnimationSynchronized(
-                WOMPAnimations.EVIL_ODACHI_BATTOJUTSO,
-                0.0F
-        );
-
-
-        player.setStamina(player.getStamina() - STAMINA_COST);
+        super.executeOnServer(container, args);
     }
 }

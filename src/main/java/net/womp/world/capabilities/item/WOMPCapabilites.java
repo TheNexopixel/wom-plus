@@ -9,7 +9,10 @@ import net.womp.WomPLUS;
 import net.womp.gameasset.animation.WOMPAnimations;
 import net.womp.gameasset.animation.WOMPCollider;
 import net.womp.skill.WOMPSkills;
+import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.gameasset.WOMSkills;
+import reascer.wom.gameasset.animations.weapons.AnimsNova;
+import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
@@ -44,7 +47,7 @@ public class WOMPCapabilites {
             WeaponCapability.builder()
                     .category(WOMPWeaponCategories.EVIL_TACHI)
                     .styleProvider((pp) -> CapabilityItem.Styles.TWO_HAND)
-                    .collider(WOMPCollider.EVIL_TACHI)
+                    .collider(WOMWeaponColliders.EVIL_TACHI)
                     .hitParticle(randomSlashHitParticleTYPE())
                     .swingSound(EpicFightSounds.WHOOSH.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
@@ -93,7 +96,7 @@ public class WOMPCapabilites {
                             WOMPAnimations.GREATAXE_ONEHAND_AUTO1,
                             WOMPAnimations.GREATAXE_ONEHAND_AUTO2,
                             WOMPAnimations.GREATAXE_ONEHAND_AUTO3,
-                            Animations.GREATSWORD_DASH,
+                            WOMPAnimations.GREATAXE_ONEHAND_DASH,
                             Animations.GREATSWORD_AIR_SLASH)
 
 

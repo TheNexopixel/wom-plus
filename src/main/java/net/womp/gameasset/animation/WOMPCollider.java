@@ -28,6 +28,6 @@ public class WOMPCollider {
     public static final Collider SHIELD = registerCollider(ResourceLocation.fromNamespaceAndPath(WomPLUS.MODID,"shield"),new MultiOBBCollider(2, 0.35D, 0.55D, 0.75D, 0.0D, 0.15D, -0.35D));
     public static final Collider HOLLOW_LONGSWORD = registerCollider(ResourceLocation.fromNamespaceAndPath(WomPLUS.MODID,"bat"),new MultiOBBCollider(4, 0.4D, 0.4D, 1.13D, 0D, 0.0D, -1.23D));
     public static final Collider EVIL_TACHI_COUNTER = registerCollider(ResourceLocation.fromNamespaceAndPath(WomPLUS.MODID,"evil_tachi_counter"),new MultiOBBCollider(1, 2.0D, 0.8D, 1.5D, -0.5D, 1.0D, -1.3D));
-    public static final Collider GREATAXE_BIG = registerCollider(ResourceLocation.fromNamespaceAndPath(WomPLUS.MODID,"bonesaw4"),new MultiOBBCollider(1, 1.8D, 1.0D, 2.1D, 0D, 1.5D, -1.4D));
+    public static final Collider GREATAXE_BIG = registerCollider(ResourceLocation.fromNamespaceAndPath(WomPLUS.MODID,"bonesaw4"),new MultiOBBCollider(1, 1.8D, 1.0D, 2.1D, 0D, 0.5D, -1.4D));
 
 }
