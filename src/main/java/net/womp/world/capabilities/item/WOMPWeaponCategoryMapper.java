@@ -14,6 +14,7 @@ public class WOMPWeaponCategoryMapper {
     static {
     //    categoryMap.put(WOMPWeaponCategories.EVIL_TACHI, CapabilityItem.WeaponCategories.TACHI);
         categoryMap.put(WOMPWeaponCategories.WOM_GREATAXE, CapabilityItem.WeaponCategories.GREATSWORD);
+        categoryMap.put(WOMPWeaponCategories.HOLLOW_LONGSWORD, CapabilityItem.WeaponCategories.AXE);
     }
     public static CapabilityItem.Builder apply(Item item, WOMPWeaponCategories category) {
         WeaponCategory mappedCategory = categoryMap.getOrDefault(category, category);

@@ -44,6 +44,8 @@ public class WoMCompat implements ICompatModule {
 
     public static void regIcon(WeaponCategoryIconRegisterEvent event) {
         event.registerCategory(WOMPWeaponCategories.EVIL_TACHI, new ItemStack(WOMItems.EVIL_TACHI.get()));
+        event.registerCategory(WOMPWeaponCategories.HOLLOW_LONGSWORD, new ItemStack(WOMItems.HOLLOW_LONGSWORD.get()));
+        event.registerCategory(WOMPWeaponCategories.WOM_GREATAXE, new ItemStack(WOMItems.IRON_GREATAXE.get()));
     }
 
     public static boolean regGuarded = false;
@@ -76,12 +78,27 @@ public class WoMCompat implements ICompatModule {
         advancedGuardMotions.put(WOMPWeaponCategories.EVIL_TACHI, (itemCap, playerpatch) ->
                 WOMPAnimations.EVIL_ODACHI_COUNTER);
 
+
         guardMotions.put(WOMPWeaponCategories.WOM_GREATAXE, (item, player) ->
                 WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT);
         guardBreakMotions.put(WOMPWeaponCategories.WOM_GREATAXE, (item, player) ->
                 Animations.GREATSWORD_GUARD_BREAK);
         advancedGuardMotions.put(WOMPWeaponCategories.WOM_GREATAXE, (itemCap, playerpatch) ->
                 WOMPAnimations.GREATAXE_ONEHAND_GUARD_COUNTER);
+
+        guardMotions.put(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) ->
+                Animations.LONGSWORD_GUARD_HIT);
+        guardBreakMotions.put(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) ->
+                Animations.BIPED_COMMON_NEUTRALIZED);
+        advancedGuardMotions.put(WOMPWeaponCategories.HOLLOW_LONGSWORD, (itemCap, playerpatch) ->
+                WOMPAnimations.HOLLOW_GUARD_STANCE_COUNTER);
+
+        guardMotions.put(CapabilityItem.WeaponCategories.SHIELD, (item, player) ->
+                Animations.BIPED_HIT_SHIELD);
+        guardBreakMotions.put(CapabilityItem.WeaponCategories.SHIELD, (item, player) ->
+                Animations.BIPED_COMMON_NEUTRALIZED);
+        advancedGuardMotions.put(CapabilityItem.WeaponCategories.SHIELD, (itemCap, playerpatch) ->
+                WOMPAnimations.HOLLOW_GUARD_STANCE_COUNTER);
 
 
         Field temp;

@@ -1,14 +1,10 @@
 package net.womp.skill.weapon_innate;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.womp.gameasset.animation.WOMPAnimations;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
-
-import java.util.UUID;
 
 public class RAHHHHH extends WeaponInnateSkill {
 

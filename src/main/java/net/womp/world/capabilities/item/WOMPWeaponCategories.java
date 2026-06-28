@@ -6,6 +6,7 @@ import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
 public enum WOMPWeaponCategories implements WeaponCategory {
     WOM_GREATAXE,
+    HOLLOW_LONGSWORD,
     EVIL_TACHI;
 
     final int id;

@@ -7,7 +7,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
 import net.womp.gameasset.animation.WOMPAnimations;
 import net.womp.world.capabilities.item.WOMPWeaponCategories;
 import reascer.wom.world.item.WOMItems;
@@ -32,13 +31,22 @@ public class NightfallCompat implements ICompatModule {
                             (i, p) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT
                     ).addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI,
                             (i, p) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED)
+                    .addGuardMotion(
+                            WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                            (i, p) -> Animations.LONGSWORD_GUARD_ACTIVE_HIT1
+                    ).addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                            (i, p) -> Animations.BIPED_COMMON_NEUTRALIZED)
 
 
                     .addAdvancedGuardMotion(WOMPWeaponCategories.EVIL_TACHI, ((capabilityItem, pp) ->
-                            List.of(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1, EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2, EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3)))
+                    List.of(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1, EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2, EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3)))
+            .addAdvancedGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, ((capabilityItem, pp) ->
+                    List.of(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1, EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2, EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3)))
 
 
             ;
+
+
 
         }
     }
@@ -47,6 +55,7 @@ public class NightfallCompat implements ICompatModule {
     public static void onIconCreate(WeaponCategoryIconRegisterEvent icon){
 
             icon.registerCategory(WOMPWeaponCategories.EVIL_TACHI, new ItemStack(WOMItems.EVIL_TACHI.get()));
+        icon.registerCategory(WOMPWeaponCategories.HOLLOW_LONGSWORD, new ItemStack(WOMItems.HOLLOW_LONGSWORD.get()));
 
     }
 

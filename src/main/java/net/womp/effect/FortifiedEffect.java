@@ -28,14 +28,14 @@ public class FortifiedEffect extends MobEffect {
     }
 
     @Override
-    public void addAttributeModifiers(LivingEntity entity, AttributeMap map, int amplifier) {
+    public void addAttributeModifiers(@NotNull LivingEntity entity, @NotNull AttributeMap map, int amplifier) {
         if (entity instanceof Player) {
             super.addAttributeModifiers(entity, map, amplifier);
         }
     }
 
     @Override
-    public void removeAttributeModifiers(LivingEntity entity, AttributeMap map, int amplifier) {
+    public void removeAttributeModifiers(@NotNull LivingEntity entity, @NotNull AttributeMap map, int amplifier) {
         if (entity instanceof Player) {
             super.removeAttributeModifiers(entity, map, amplifier);
         }

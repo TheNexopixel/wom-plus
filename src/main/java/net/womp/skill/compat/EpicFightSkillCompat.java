@@ -35,12 +35,16 @@ public class EpicFightSkillCompat {
             builder.addGuardMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT)
                     .addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> Animations.GREATSWORD_GUARD_BREAK);
 
+            builder.addGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.LONGSWORD_GUARD_HIT)
+                    .addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED);
+
         }
     }
     @SubscribeEvent
     public static void onSwordSkillCreate(SkillBuildEvent.ModRegistryWorker.SkillCreateEvent<SwordmasterSkill.Builder> event) {
         if (event.getRegistryName().equals(ResourceLocation.fromNamespaceAndPath("epicfight","swordmaster"))) {
             SwordmasterSkill.Builder builder = event.getSkillBuilder();
+            builder.addAvailableWeaponCategory(WOMPWeaponCategories.HOLLOW_LONGSWORD);
             builder.addAvailableWeaponCategory(WOMPWeaponCategories.EVIL_TACHI);
         }
     }
@@ -55,12 +59,18 @@ public class EpicFightSkillCompat {
             builder.addGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT)
                     .addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED)
                     .addAdvancedGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> List.of(WOMPAnimations.EVIL_ODACHI_PARRY1, WOMPAnimations.EVIL_ODACHI_PARRY2));
+
+            builder.addGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.LONGSWORD_GUARD_HIT)
+                    .addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
+                    .addAdvancedGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> List.of(Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.SWORD_GUARD_ACTIVE_HIT3,Animations.SWORD_GUARD_ACTIVE_HIT1));
+
         }
     }
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onIconCreate(WeaponCategoryIconRegisterEvent icon){
         icon.registerCategory(WOMPWeaponCategories.EVIL_TACHI, new ItemStack(WOMItems.EVIL_TACHI.get()));
+        icon.registerCategory(WOMPWeaponCategories.HOLLOW_LONGSWORD, new ItemStack(WOMItems.HOLLOW_LONGSWORD.get()));
         icon.registerCategory(WOMPWeaponCategories.WOM_GREATAXE, new ItemStack(WOMItems.IRON_GREATAXE.get()));
 
     }

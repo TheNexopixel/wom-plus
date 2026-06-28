@@ -33,6 +33,9 @@ public class  CombatEvolutionCompat implements ICompatModule {
         event.registerExecutionByItem(WeaponsOfMinecraft.identifier("iron_greataxe"), CapabilityItem.Styles.ONE_HAND,
                 ExecutionTypeManager.COLOSSALSWORD_TYPE);
 
+        event.registerExecutionByItem(WeaponsOfMinecraft.identifier("hollow_longsword"), CapabilityItem.Styles.ONE_HAND,
+                ExecutionTypeManager.COLOSSALSWORD_TYPE);
+
 
 
     }

@@ -20,6 +20,7 @@ import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -112,27 +113,34 @@ public class WOMPCapabilites {
 
     public static final Function<Item, CapabilityItem.Builder> HOLLOW_LONGSWORD = (item) ->
             WeaponCapability.builder()
-                    .category(CapabilityItem.WeaponCategories.LONGSWORD)
-                    .styleProvider((pp) -> CapabilityItem.Styles.ONE_HAND)
+                    .category(WOMPWeaponCategories.HOLLOW_LONGSWORD)
                     .collider(WOMPCollider.HOLLOW_LONGSWORD)
-                    .styleProvider((pp) ->
-                            pp.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == CapabilityItem.WeaponCategories.SHIELD ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND)
+                    .styleProvider((playerpatch) -> {
+                        if (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == CapabilityItem.WeaponCategories.SHIELD) {
+                            return CapabilityItem.Styles.ONE_HAND;
+                        } else {
+                        return CapabilityItem.Styles.TWO_HAND;
+                    }})
+
+
                     .swingSound(EpicFightSounds.WHOOSH.get())
                     .hitParticle(EpicFightParticles.HIT_BLADE.get())
+
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .canBePlacedOffhand(false)
-                    .innateSkill(CapabilityItem.Styles.TWO_HAND, ip -> WOMPSkills.RAAAHHH)
+                    .innateSkill(CapabilityItem.Styles.ONE_HAND, ip -> WOMPSkills.RAAAHHH)
                     .weaponCombinationPredicator((entityPatch) -> EpicFightCapabilities.getItemStackCapability(entityPatch.getOriginal().getOffhandItem()).getWeaponCategory() == CapabilityItem.WeaponCategories.SHIELD)
-                    .innateSkill(CapabilityItem.Styles.ONE_HAND, ip -> EpicFightSkills.SHARP_STAB)
-                    .newStyleCombo(CapabilityItem.Styles.TWO_HAND,
-                            WOMPAnimations.HOLLOW_OCHS_AUTO1,
-                            WOMPAnimations.HOLLOW_OCHS_AUTO2,
-                            WOMPAnimations.HOLLOW_OCHS_AUTO3,
-                            WOMPAnimations.HOLLOW_OCHS_AUTO4,
-                            Animations.LONGSWORD_DASH,
-                            Animations.LONGSWORD_AIR_SLASH)
-
+                    .innateSkill(CapabilityItem.Styles.TWO_HAND, ip -> EpicFightSkills.SHARP_STAB)
                     .newStyleCombo(CapabilityItem.Styles.ONE_HAND,
+                            WOMPAnimations.HOLLOW_GUARD_STANCE_AUTO1,
+                            WOMPAnimations.HOLLOW_GUARD_STANCE_AUTO2,
+                            WOMPAnimations.HOLLOW_GUARD_STANCE_AUTO3,
+                            WOMPAnimations.HOLLOW_GUARD_STANCE_AUTO4,
+                            WOMPAnimations.HOLLOW_GUARD_STANCE_AUTO5,
+                            WOMPAnimations.HOLLOW_GUARD_STANCE_DASH,
+                            WOMPAnimations.HOLLOW_GUARD_STANCE_AIRSLASH)
+
+                    .newStyleCombo(CapabilityItem.Styles.TWO_HAND,
 
                             WOMPAnimations.HOLLOW_ONEHANDED_AUTO1,
                             WOMPAnimations.HOLLOW_ONEHANDED_AUTO2,
@@ -141,16 +149,16 @@ public class WOMPCapabilites {
                             Animations.LONGSWORD_AIR_SLASH)
 
 
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, WOMPAnimations.HOLLOW_OCHS_IDLE)
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.WALK, WOMPAnimations.HOLLOW_OCHS_WALK)
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.RUN, WOMPAnimations.HOLLOW_OCHS_RUN)
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK_SHIELD, Animations.BIPED_BLOCK)
-
-                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.IDLE, WOMPAnimations.HOLLOW_ONEHANDED_IDLE)
-                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.WALK, WOMPAnimations.HOLLOW_ONEHANDED_WALK)
-                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD)
+                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.IDLE, WOMPAnimations.HOLLOW_GUARD_STANCE_IDLE)
+                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.WALK, WOMPAnimations.HOLLOW_OCHS_WALK)
+                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.RUN, WOMPAnimations.HOLLOW_OCHS_RUN)
                     .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD)
-            ;
+              //      .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK_SHIELD, Animations.BIPED_BLOCK)
+
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, WOMPAnimations.HOLLOW_ONEHANDED_IDLE)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.WALK, WOMPAnimations.HOLLOW_ONEHANDED_WALK)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD);
 
     @SubscribeEvent
     public static void WeaponMovesetRegister(WeaponCapabilityPresetRegistryEvent event) {
