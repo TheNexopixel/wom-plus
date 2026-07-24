@@ -1,14 +1,18 @@
 package net.womp.skill.compat;
 
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegisterEvent;
 import net.womp.gameasset.animation.WOMPAnimations;
+import net.womp.skill.WOMPSkills;
 import net.womp.world.capabilities.item.WOMPWeaponCategories;
 import reascer.wom.gameasset.WOMSkills;
 
+import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
+import reascer.wom.world.capabilities.item.GesetzCapability;
 import reascer.wom.world.item.WOMItems;
 import yesman.epicfight.api.client.forgeevent.WeaponCategoryIconRegisterEvent;
 import yesman.epicfight.compat.ICompatModule;
@@ -22,6 +26,7 @@ import yesman.epicfight.world.capabilities.item.WeaponCategory;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 @SuppressWarnings("unchecked")
@@ -98,7 +103,7 @@ public class WoMCompat implements ICompatModule {
         guardBreakMotions.put(CapabilityItem.WeaponCategories.SHIELD, (item, player) ->
                 Animations.BIPED_COMMON_NEUTRALIZED);
         advancedGuardMotions.put(CapabilityItem.WeaponCategories.SHIELD, (itemCap, playerpatch) -> {
-                if(playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getInnateSkill(playerpatch,playerpatch.getAdvancedHoldingItemStack(InteractionHand.MAIN_HAND)).equals(WOMPSkills.RAAAHHH)){
+                if(Objects.equals(playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getInnateSkill(playerpatch, playerpatch.getAdvancedHoldingItemStack(InteractionHand.MAIN_HAND)), WOMPSkills.RAAAHHH)){
             return WOMPAnimations.HOLLOW_GUARD_STANCE_COUNTER;
         }else return playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND) instanceof GesetzCapability ? AnimsHerrscher.HERRSCHER_TRANE : Animations.SWEEPING_EDGE;
     }
