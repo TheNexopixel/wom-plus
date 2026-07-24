@@ -197,7 +197,7 @@ public class WOMPAnimations {
                                         0.45F,
                                         Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
                                         AnimationEvent.Side.CLIENT
-                                ).params(new Vec3f(1.0F, -0.5F, -2.0F), Armatures.BIPED.get().rootJoint, 2.0D, 3.0F))
+                                ).params(new Vec3f(1.0F, -0.25F, -2.0F), Armatures.BIPED.get().rootJoint, 1.0D, 0.5F))
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
 
         GREATAXE_ONEHAND_DASH = builder.nextAccessor("biped/combat/greataxe_onehand_dash", (accessor) ->
@@ -411,7 +411,7 @@ public class WOMPAnimations {
                                                     );
 
                                                     if (smoke != null) {
-                                                        smoke.scale(1.0F);
+                                                        smoke.scale(0.3F);
                                                         smoke.setLifetime(22);
                                                     }
                                                 }
@@ -683,6 +683,168 @@ public class WOMPAnimations {
                                 (e, s, p) ->
                                         e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 35, 60 )), AnimationEvent.Side.SERVER
                         ))
+                        .addEvents(
+                                AnimationEvent.InPeriodEvent.create(
+                                        0.12F,
+                                        0.8F,
+                                        (e, s, p) -> {
+
+                                            var entity = e.getOriginal();
+                                            if (entity == null) {
+                                                return;
+                                            }
+
+                                            RandomSource random = RandomSource.create();
+
+                                            Vec3 basePos = JointTrack.getJointWithTranslation(
+                                                    Minecraft.getInstance().player,
+                                                    entity,
+                                                    new Vec3f(0F, -1.0F, -0.2F),
+                                                    Armatures.BIPED.get().rootJoint
+                                            );
+
+                                            List<Vec3> positions = new ArrayList<>();
+
+                                            positions.add(JointTrack.getJointWithTranslation(
+                                                    Minecraft.getInstance().player,
+                                                    entity,
+                                                    new Vec3f(-0.25F, 0F, 0F),
+                                                    Armatures.BIPED.get().legL));
+
+                                            positions.add(JointTrack.getJointWithTranslation(
+                                                    Minecraft.getInstance().player,
+                                                    entity,
+                                                    new Vec3f(0.25F, 0F, 0F),
+                                                    Armatures.BIPED.get().legR));
+
+                                            positions.add(JointTrack.getJointWithTranslation(
+                                                    Minecraft.getInstance().player,
+                                                    entity,
+                                                    new Vec3f(0F, -0.2F, -0.2F),
+                                                    Armatures.BIPED.get().rootJoint));
+
+                                            for (Vec3 pos : positions) {
+
+                                                if (pos == null)
+                                                    continue;
+
+                                                double x = (random.nextDouble() - 0.5D) * 0.45D;
+                                                double y = random.nextDouble() * 0.15D;
+                                                double z = (random.nextDouble() - 0.5D) * 0.45D;
+
+                                                Particle smoke = Minecraft.getInstance().particleEngine.createParticle(
+                                                        ParticleTypes.POOF,
+                                                        pos.x + x,
+                                                        pos.y + y,
+                                                        pos.z + z,
+                                                        entity.getDeltaMovement().x * 0.2,
+                                                        0.08,
+                                                        entity.getDeltaMovement().z * 0.2
+                                                );
+
+                                                if (smoke != null) {
+                                                    smoke.scale(0.3F);
+                                                    smoke.setLifetime(15);
+                                                }
+                                            }
+
+                                            if (basePos != null) {
+
+                                                for (int i = 0; i < 8; i++) {
+
+                                                    double x = (random.nextDouble() - 0.5D) * 0.8D;
+                                                    double z = (random.nextDouble() - 0.5D) * 0.8D;
+
+                                                    Particle smoke = Minecraft.getInstance().particleEngine.createParticle(
+                                                            ParticleTypes.POOF,
+                                                            basePos.x + x,
+                                                            basePos.y,
+                                                            basePos.z + z,
+                                                            x * 0.05,
+                                                            0.12,
+                                                            z * 0.05
+                                                    );
+
+                                                    if (smoke != null) {
+                                                        smoke.scale(0.2F);
+                                                        smoke.setLifetime(12);
+                                                    }
+                                                }
+                                            }
+
+                                            entity.level().addParticle(
+                                                    ParticleTypes.CLOUD,
+                                                    entity.getX(),
+                                                    entity.getY() + 0.1,
+                                                    entity.getZ(),
+                                                    0,
+                                                    0.15,
+                                                    0
+                                            );
+
+                                        },
+                                        AnimationEvent.Side.CLIENT
+                                ),
+                                AnimationEvent.InTimeEvent.create(
+                                        0.10F,
+                                        (e, s, p) -> {
+
+                                            var entity = e.getOriginal();
+                                            RandomSource random = RandomSource.create();
+
+                                            for (int i = 0; i < 28; i++) {
+
+                                                double angle = Math.PI * 2.0 * i / 28.0;
+
+                                                double radius = 0.2 + random.nextDouble() * 0.2;
+
+                                                double x = Math.cos(angle) * radius;
+                                                double z = Math.sin(angle) * radius;
+
+                                                double speed = 0.9 + random.nextDouble() * 1.1;
+
+                                                entity.level().addParticle(
+                                                        ParticleTypes.CLOUD,
+                                                        entity.getX() + x,
+                                                        entity.getY() + 0.05,
+                                                        entity.getZ() + z,
+                                                        x * speed,
+                                                        0.05,
+                                                        z * speed
+                                                );
+                                            }
+
+                                        },
+                                        AnimationEvent.Side.CLIENT
+                                )
+
+                        )
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1f, (e, s, p) ->
+                                                e.getOriginal().level().playSound(
+                                                        null,
+                                                        e.getOriginal().blockPosition(),
+                                                        SoundEvents.FIREWORK_ROCKET_BLAST,
+                                                        SoundSource.PLAYERS,
+                                                        1.0F,
+                                                        0.65F
+                                                )
+
+
+                                        , AnimationEvent.Side.SERVER))
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.14f, (e, s, p) ->
+                                                e.getOriginal().level().playSound(
+                                                        null,
+                                                        e.getOriginal().blockPosition(),
+                                                        SoundEvents.ENDER_DRAGON_SHOOT,
+                                                        SoundSource.PLAYERS,
+                                                        1.0F,
+                                                        0.8F
+                                                )
+
+
+                                        , AnimationEvent.Side.SERVER))
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false));
 
 
@@ -918,7 +1080,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0f, 0.60f))
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addEvents(
-                                AnimUtils.LaunchEnemyAirSlash(2.0F, 2,25,0.34f)
+                                AnimUtils.LaunchEnemyAirSlash(2.0F, 2,15,0.34f)
                         )
 
         );
@@ -1274,7 +1436,7 @@ public class WOMPAnimations {
         HOLLOW_GUARD_STANCE_AUTO2 = builder.nextAccessor("biped/combat/hollow_guard_stance_att2", (accessor) ->
                 new BasicMultipleAttackAnimation(0.12F, 0.18F, 0.18F, 0.3F, 0.53F, WOMPCollider.SHIELD, biped.get().toolL, accessor, biped)
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                        .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get())
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(5F))
@@ -1296,7 +1458,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.4F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(5F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                        .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get())
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(20F))
@@ -1385,7 +1547,7 @@ public class WOMPAnimations {
                                 InteractionHand.MAIN_HAND, biped.get().toolL, WOMPCollider.SHIELD)
                                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
                                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.20f))
-                                .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                                .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
                                 .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get())
                                 .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT),
 

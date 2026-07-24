@@ -48,7 +48,7 @@ public class WOMPCapabilites {
             WeaponCapability.builder()
                     .category(WOMPWeaponCategories.EVIL_TACHI)
                     .styleProvider((pp) -> CapabilityItem.Styles.TWO_HAND)
-                    .collider(WOMWeaponColliders.EVIL_TACHI)
+                    .collider(WOMPCollider.EVIL_TACHI)
                     .hitParticle(randomSlashHitParticleTYPE())
                     .swingSound(EpicFightSounds.WHOOSH.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
@@ -67,6 +67,8 @@ public class WOMPCapabilites {
 
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, WOMPAnimations.EVIL_ODACHI_IDLE)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.WALK, WOMPAnimations.EVIL_ODACHI_WALK)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.SNEAK, WOMPAnimations.EVIL_ODACHI_SNEAK)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.KNEEL, WOMPAnimations.EVIL_ODACHI_KNEEL)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.RUN, WOMPAnimations.EVIL_ODACHI_RUN)
                     .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, WOMPAnimations.EVIL_ODACHI_GUARD);
 

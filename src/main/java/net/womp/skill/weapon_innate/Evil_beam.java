@@ -2,6 +2,7 @@ package net.womp.skill.weapon_innate;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.womp.gameasset.animation.WOMPAnimations;
+import reascer.wom.world.item.WOMItems;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
@@ -21,9 +22,13 @@ public class Evil_beam extends SimpleWeaponInnateSkill {
     public boolean canExecute(SkillContainer container) {
         PlayerPatch<?> player = container.getExecutor();
 
-        if (player.getOriginal().isSprinting()) {
+        if (player.getOriginal().isSprinting()
+                && player.getOriginal().getMainHandItem().getItem() == WOMItems.EVIL_TACHI.get()
+        ) {
 
-            if (container.getStack() <= 0 && player.getStamina() >= STAMINA_COST) {
+            if (// container.getStack() <= 0
+             !player.getOriginal().isCreative()
+                    && player.getStamina() >= STAMINA_COST) {
                 container.setStack(container.getStack() +1);
                 injectedStack = true;
             }
@@ -38,9 +43,12 @@ public class Evil_beam extends SimpleWeaponInnateSkill {
     public void executeOnServer(SkillContainer container, FriendlyByteBuf args) {
         PlayerPatch<?> player = container.getServerExecutor();
 
-        if (player.getOriginal().isSprinting()) {
+        if (player.getOriginal().isSprinting() && player.getOriginal().getMainHandItem().getItem() == WOMItems.EVIL_TACHI.get()) {
 
-            player.setStamina(player.getStamina() - STAMINA_COST);
+            if (!player.getOriginal().isCreative()){
+
+                player.setStamina(player.getStamina() - STAMINA_COST);
+            }
 
             player.playAnimationSynchronized(
                     WOMPAnimations.EVIL_ODACHI_BATTOJUTSO,
