@@ -98,7 +98,11 @@ public class WoMCompat implements ICompatModule {
         guardBreakMotions.put(CapabilityItem.WeaponCategories.SHIELD, (item, player) ->
                 Animations.BIPED_COMMON_NEUTRALIZED);
         advancedGuardMotions.put(CapabilityItem.WeaponCategories.SHIELD, (itemCap, playerpatch) ->
-                WOMPAnimations.HOLLOW_GUARD_STANCE_COUNTER);
+                if(itemCap.getInnateSkill(playerpatch,playerpatch.getAdvancedHoldingItemStack(InteractionHand.MAIN_HAND)).equals(WOMPSkills.RAAAHHH)){
+            return WOMPAnimations.HOLLOW_GUARD_STANCE_COUNTER;
+        }else return playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND) instanceof GesetzCapability ? AnimsHerrscher.HERRSCHER_TRANE : Animations.SWEEPING_EDGE;
+                    
+                            );
 
 
         Field temp;
