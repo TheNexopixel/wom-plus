@@ -89,7 +89,7 @@ public class WoMCompat implements ICompatModule {
         guardBreakMotions.put(WOMPWeaponCategories.WOM_GREATAXE, (item, player) ->
                 Animations.GREATSWORD_GUARD_BREAK);
         advancedGuardMotions.put(WOMPWeaponCategories.WOM_GREATAXE, (itemCap, playerpatch) ->
-                WOMPAnimations.GREATAXE_ONEHAND_GUARD_COUNTER);
+                WOMPAnimations.GREATAXE_ONEHAND_AIRSLASH);
 
         guardMotions.put(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) ->
                 Animations.LONGSWORD_GUARD_HIT);
