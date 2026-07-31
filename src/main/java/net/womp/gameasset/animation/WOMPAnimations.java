@@ -83,6 +83,7 @@ public class WOMPAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AUTO1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AUTO2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AUTO3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AUTO4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AIRSLASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_ONEHAND_AIRSLASH_NEW;
@@ -166,7 +167,7 @@ public class WOMPAnimations {
 
         GREATAXE_ONEHAND_AUTO3 = builder.nextAccessor("biped/combat/greataxe_onehand_auto3", (accessor) ->
                 new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.46f, 0.65f, 0.9F, WOMPCollider.GREATAXE_BIG, biped.get().rootJoint, accessor, biped)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(4.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.4f))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
@@ -175,7 +176,21 @@ public class WOMPAnimations {
                                         0.55F,
                                         Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
                                         AnimationEvent.Side.CLIENT
-                                ).params(new Vec3f(1.0F, -0.25F, -2.0F), Armatures.BIPED.get().rootJoint, 2.0D, 3.0F))
+                                ).params(new Vec3f(0.0F, -0.25F, -1.0F), Armatures.BIPED.get().toolR, 1.1D, 1.5F))
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        GREATAXE_ONEHAND_AUTO4 = builder.nextAccessor("biped/combat/greataxe_onehand_auto4", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.66f, 0.8f, 0.9F, WOMPCollider.GREATAXE_BIG, biped.get().rootJoint, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(4.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(
+                                        0.75F,
+                                        Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
+                                        AnimationEvent.Side.CLIENT
+                                ).params(new Vec3f(0.0F, -0.25F, -2.0F), Armatures.BIPED.get().toolR, 2.0D, 2.0F))
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
 
         GREATAXE_ONEHAND_AIRSLASH = builder.nextAccessor("biped/combat/greataxe_onehand_airslash", (accessor) ->
@@ -197,7 +212,7 @@ public class WOMPAnimations {
                                         0.45F,
                                         Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
                                         AnimationEvent.Side.CLIENT
-                                ).params(new Vec3f(1.0F, -0.25F, -2.0F), Armatures.BIPED.get().rootJoint, 1.0D, 0.5F))
+                                ).params(new Vec3f(0.0F, -0.25F, -2.0F), Armatures.BIPED.get().toolR, 1.1D, 1.5F))
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
 
         GREATAXE_ONEHAND_DASH = builder.nextAccessor("biped/combat/greataxe_onehand_dash", (accessor) ->
