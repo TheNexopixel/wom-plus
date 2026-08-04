@@ -75,19 +75,19 @@ public class WOMPCapabilites {
     public static final Function<Item, CapabilityItem.Builder> GREATAXE = (item) ->
             WeaponCapability.builder()
                     .category(WOMPWeaponCategories.WOM_GREATAXE)
-                    .styleProvider((pp) -> CapabilityItem.Styles.ONE_HAND)
+                    .styleProvider((pp) -> CapabilityItem.Styles.TWO_HAND)
                     .weaponCombinationPredicator((entityPatch) -> EpicFightCapabilities.getItemStackCapability(entityPatch.getOriginal().getOffhandItem()).getWeaponCategory() == WOMPWeaponCategories.WOM_GREATAXE)
                     .collider(ColliderPreset.GREATSWORD)
                     .styleProvider((pp) ->
-                            pp.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WOMPWeaponCategories.WOM_GREATAXE ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND)
+                            pp.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WOMPWeaponCategories.WOM_GREATAXE ? CapabilityItem.Styles.OCHS : CapabilityItem.Styles.TWO_HAND)
                     .swingSound(EpicFightSounds.WHOOSH_BIG.get())
                     .hitParticle(EpicFightParticles.HIT_BLADE.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .canBePlacedOffhand(true)
-                    .innateSkill(CapabilityItem.Styles.TWO_HAND, ip -> WOMPSkills.ANNIHILATE)
+                    .innateSkill(CapabilityItem.Styles.OCHS, ip -> WOMPSkills.ANNIHILATE)
                     .innateSkill(CapabilityItem.Styles.ONE_HAND, ip -> WOMPSkills.COMET)
 
-                    .newStyleCombo(CapabilityItem.Styles.TWO_HAND,
+                    .newStyleCombo(CapabilityItem.Styles.OCHS,
                             WOMPAnimations.GREATAXE_DUAL_AUTO1,
                             WOMPAnimations.GREATAXE_DUAL_AUTO2,
                             WOMPAnimations.GREATAXE_DUAL_AUTO3,
@@ -95,7 +95,7 @@ public class WOMPCapabilites {
                             WOMPAnimations.GREATAXE_DUAL_DASH,
                             WOMPAnimations.GREATAXE_AIRSLASH)
 
-                    .newStyleCombo(CapabilityItem.Styles.ONE_HAND,
+                    .newStyleCombo(CapabilityItem.Styles.TWO_HAND,
                             WOMPAnimations.GREATAXE_ONEHAND_AUTO1,
                             WOMPAnimations.GREATAXE_ONEHAND_AUTO2,
                             WOMPAnimations.GREATAXE_ONEHAND_AUTO3,
@@ -104,15 +104,15 @@ public class WOMPCapabilites {
                             WOMPAnimations.GREATAXE_ONEHAND_AIRSLASH_NEW)
 
 
-                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.IDLE, WOMPAnimations.GREATAXE_ONEHAND_IDLE)
-                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.WALK, WOMPAnimations.GREATAXE_ONEHAND_WALK)
-                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.RUN, WOMPAnimations.GREATAXE_ONEHAND_RUN)
-                    .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.BLOCK, WOMPAnimations.GREATAXE_ONEHAND_GUARD)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, WOMPAnimations.GREATAXE_ONEHAND_IDLE)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.WALK, WOMPAnimations.GREATAXE_ONEHAND_WALK)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.RUN, WOMPAnimations.GREATAXE_ONEHAND_RUN)
+                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, WOMPAnimations.GREATAXE_ONEHAND_GUARD)
 
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.IDLE, WOMPAnimations.GREATAXE_DUAL_IDLE)
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.WALK, WOMPAnimations.GREATAXE_DUAL_WALK)
-                    .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.RUN, WOMPAnimations.GREATAXE_DUAL_RUN);
+                    .livingMotionModifier(CapabilityItem.Styles.OCHS, LivingMotions.IDLE, WOMPAnimations.GREATAXE_DUAL_IDLE)
+                    .livingMotionModifier(CapabilityItem.Styles.OCHS, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+                    .livingMotionModifier(CapabilityItem.Styles.OCHS, LivingMotions.WALK, WOMPAnimations.GREATAXE_DUAL_WALK)
+                    .livingMotionModifier(CapabilityItem.Styles.OCHS, LivingMotions.RUN, WOMPAnimations.GREATAXE_DUAL_RUN);
 
     public static final Function<Item, CapabilityItem.Builder> HOLLOW_LONGSWORD = (item) ->
             WeaponCapability.builder()
