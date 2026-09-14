@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.womp.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BusterMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

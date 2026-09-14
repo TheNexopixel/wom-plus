@@ -13,7 +13,6 @@ import java.util.List;
 
 
 public class AnimUtils {
-
     /**
      * @param stunTime          Duration stun time
      * @param levitationLevel   Amplifier
@@ -30,36 +29,21 @@ public class AnimUtils {
                 startTime,
                 (livingEntityPatch, assetAccessor, animationParameters) -> {
 
-                    if (!livingEntityPatch.isLastAttackSuccess()) {
-                        return;
-                    }
+                    List<LivingEntity> targets = livingEntityPatch.getCurrentlyActuallyHitEntities();
 
-                    List<LivingEntity> targets =
-                            livingEntityPatch.getCurrentlyActuallyHitEntities();
 
-                    if (targets == null || targets.isEmpty()) {
-                        return;
-                    }
+                    if (!livingEntityPatch.isLastAttackSuccess()) { return; }
+                    if (targets == null || targets.isEmpty()) { return; }
 
                     for (LivingEntity entity : targets) {
 
-                        if (entity == null || !entity.isAlive()) {
-                            continue;
-                        }
+                        if (entity == null || entity.isAlive()) { continue; }
 
-                        LivingEntityPatch<?> targetPatch =
-                                EpicFightCapabilities.getEntityPatch(
-                                        entity,
-                                        LivingEntityPatch.class
-                                );
+                        LivingEntityPatch<?> targetPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
-                        if (targetPatch == null) {
-                            continue;
-                        }
+                        if (targetPatch == null) { continue; }
 
-                        float kbRes =
-                                (float) entity.getAttributeValue(
-                                        Attributes.KNOCKBACK_RESISTANCE);
+                        float kbRes = (float) entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
 
                         targetPatch.applyStun(
                                 StunType.HOLD,
@@ -67,7 +51,6 @@ public class AnimUtils {
                         );
 
                         if (!entity.level().isClientSide) {
-
                             entity.removeEffect(MobEffects.LEVITATION);
                             entity.removeEffect(MobEffects.SLOW_FALLING);
 
@@ -81,10 +64,8 @@ public class AnimUtils {
                                             false
                                     )
                             );
-
                         }
                     }
-
                 },
                 AnimationEvent.Side.SERVER
         );

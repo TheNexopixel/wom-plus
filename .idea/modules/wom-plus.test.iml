@@ -13,10 +13,8 @@
     </facet>
   </component>
   <component name="McpModuleSettings">
-    <option name="mappingFile" value="B:\Programme\Meine Programme._\WoM Plus\build\createMcpToSrg\output.tsrg" />
-    <option name="mcpVersion" value="official_1.20.1" />
-    <option name="minecraftVersion" value="1.20.1" />
-    <option name="platformVersion" value="47.4.18" />
+    <option name="minecraftVersion" value="1.21.1" />
+    <option name="platformVersion" value="21.1.250" />
     <option name="srgType" value="TSRG" />
   </component>
 </module>

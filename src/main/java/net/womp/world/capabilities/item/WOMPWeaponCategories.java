@@ -7,6 +7,7 @@ import yesman.epicfight.world.capabilities.item.WeaponCategory;
 public enum WOMPWeaponCategories implements WeaponCategory {
     WOM_GREATAXE,
     HOLLOW_LONGSWORD,
+    NOVA,
     BLACKSTAR,
     EVIL_TACHI;
 
@@ -22,7 +23,8 @@ public enum WOMPWeaponCategories implements WeaponCategory {
     public int universalOrdinal() {
         return this.id;
     }
-    public CapabilityItem.Builder apply(Item item) {
+
+    public CapabilityItem.Builder<?> apply(Item item) {
         return WOMPWeaponCategoryMapper.apply(item,this);
     }
 

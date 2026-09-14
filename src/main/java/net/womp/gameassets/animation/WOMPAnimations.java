@@ -1,11 +1,9 @@
-package net.womp.gameasset.animation;
+package net.womp.gameassets.animation;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -14,12 +12,15 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 import net.womp.api.animation.AnimUtils;
 import net.womp.api.animation.JointTrack;
 import net.womp.effect.WOMPEffects;
-import net.womp.gameasset.WOMPSounds;
+import net.womp.gameassets.WOMPSounds;
 import org.joml.Vector3f;
 import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
@@ -36,12 +37,12 @@ import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
-import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
-import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.registry.entries.EpicFightMobEffects;
+import yesman.epicfight.registry.entries.EpicFightParticles;
+import yesman.epicfight.registry.entries.EpicFightSounds;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.StunType;
-import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +54,21 @@ import static net.womp.api.animation.JointTrack.getJointWithTranslation;
 
 public class WOMPAnimations {
 
+    // NOVA
+
+    public static AnimationManager.AnimationAccessor<StaticAnimation> NOVA_ONEHAND_IDLE;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AUTO1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AUTO2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AUTO3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AUTO4;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_DASH;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AIRSLASH;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> NOVA_ONEHAND_DFB_WINDUP;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_DFB_RELEASE;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> NOVA_ASTRAL_ACCELERATION;
+
+
     // BLACKSTAR
-    public static AnimationManager.AnimationAccessor<StaticAnimation> BLACKSTAR_GUARD;
-    public static AnimationManager.AnimationAccessor<GuardAnimation> BLACKSTAR_GUARD_HIT;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> BLACKSTAR_NEUTRALIZED;
     public static AnimationManager.AnimationAccessor<StaticAnimation> BLACKSTAR_DFB_WINDUP;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> BLACKSTAR_DFB_RELEASE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> BLACKSTAR_COUNTERATTACK;
@@ -81,7 +93,7 @@ public class WOMPAnimations {
     public static AnimationManager.AnimationAccessor<AirSlashAnimation> EVIL_ODACHI_AIRSLASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_BEAAAMMMM;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_COUNTER;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_BATTOJUTSO;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_BATTOJUTSU;
     public static AnimationManager.AnimationAccessor<ActionAnimation> EVIL_ODACHI_OVERHEADSLASH_CHARGE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_OVERHEADSLASH_RELEASE;
 
@@ -140,9 +152,7 @@ public class WOMPAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_DUAL_REIFT_AUTO3;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_DUAL_REIFT_AUTO4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATAXE_DUAL_REIFT_DASH;
-
-
-
+    
     public static AnimationManager.AnimationAccessor<StaticAnimation> HOLLOW_GUARD_STANCE_IDLE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HOLLOW_OCHS_WALK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HOLLOW_OCHS_RUN;
@@ -165,14 +175,282 @@ public class WOMPAnimations {
     public static void build(AnimationManager.AnimationBuilder builder) {
         Armatures.ArmatureAccessor<HumanoidArmature> biped = Armatures.BIPED;
 
-        BLACKSTAR_GUARD = builder.nextAccessor("biped/living/blackstar_guard", ac ->
+
+        NOVA_ONEHAND_IDLE = builder.nextAccessor("biped/living/nova_onehand_idle", ac ->
                 new StaticAnimation(0.12F, true, ac, biped));
 
-        BLACKSTAR_GUARD_HIT = builder.nextAccessor("biped/living/blackstar_guard_hit", ac ->
-                new GuardAnimation(0.12F, ac, biped));
 
-        BLACKSTAR_NEUTRALIZED = builder.nextAccessor("biped/living/blackstar_neutralized", ac ->
-                new LongHitAnimation(0.12F, ac, biped));
+        NOVA_ONEHAND_AUTO1 = builder.nextAccessor("biped/combat/nova_onehand_auto1", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.3f, 0.46f, 0.7F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_AUTO2 = builder.nextAccessor("biped/combat/nova_onehand_auto2", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.3f, 0.46f, 0.7F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_AUTO3 = builder.nextAccessor("biped/combat/nova_onehand_auto3", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.3f, 0.46f, 0.7F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_AUTO4 = builder.nextAccessor("biped/combat/nova_onehand_auto4", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.4f, 0.56f, 0.7F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(1.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.352f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_DASH = builder.nextAccessor("biped/combat/nova_onehand_dash", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.3f, 0.4f, 0.9F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(0.9f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(20f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.152f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_AIRSLASH = builder.nextAccessor("biped/combat/nova_onehand_airslash", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.25f, 0.43f, 0.9F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(0.9f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.452f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_DFB_WINDUP = builder.nextAccessor("biped/skill/nova_onehand_dfb_windup", ac ->
+                new StaticAnimation(1.2F, false, ac, biped)
+                        .newConditionalTimePair((entitypatch) -> entitypatch.getOriginal().isUsingItem() ? 0 : 1, 0.0F, Float.MAX_VALUE)
+                        .addConditionalState(0, EntityState.UPDATE_LIVING_MOTION, false)
+                        .addConditionalState(1, EntityState.UPDATE_LIVING_MOTION, true)
+                        .newTimePair(0.0F, Float.MAX_VALUE).addStateRemoveOld(EntityState.CAN_SWITCH_HAND_ITEM, false)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.FIXED_HEAD_ROTATION, true)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false)
+        );
+
+        NOVA_ONEHAND_DFB_RELEASE = builder.nextAccessor("biped/skill/nova_onehand_dfb_release", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.05F, 0.05F, 0.3F, 0.50F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(10F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.GUARD_PUNCTURE,WOMDamageType.BLACKOUT))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                        .addState(EntityState.TURNING_LOCKED, true)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false));
+
+        NOVA_ASTRAL_ACCELERATION = builder.nextAccessor("biped/skill/astral_acceleration", ac ->
+                new ActionAnimation(0.12F, ac, biped)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.93f, (e, s, p) ->
+                                                e.getOriginal().level().playSound(
+                                                        null,
+                                                        e.getOriginal().blockPosition(),
+                                                        EpicFightSounds.WHOOSH_SHARP.get(),
+                                                        SoundSource.PLAYERS,
+                                                        1.8F,
+                                                        1.8F
+                                                )
+
+                                        , AnimationEvent.Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.45f, (e, s, p) ->
+                                                e.getOriginal().level().playSound(
+                                                        null,
+                                                        e.getOriginal().blockPosition(),
+                                                        EpicFightSounds.WHOOSH_BIG.get(),
+                                                        SoundSource.PLAYERS,
+                                                        1.2F,
+                                                        1.1F
+                                                )
+
+                                        , AnimationEvent.Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(
+                                        0.9f,
+
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+/*
+                                            ItemStack weapon = entity.getMainHandItem();
+
+                                            int sweepingLevel = EnchantmentHelper.getTagEnchantmentLevel(
+                                                    Enchantments.SWEEPING_EDGE,
+                                                    weapon
+                                            );
+
+                                            int amplifier = 0 + sweepingLevel;
+*/
+                                            entity.addEffect(
+                                                    new MobEffectInstance(
+                                                            MobEffects.DIG_SPEED,
+                                                            400,
+                                                            2,
+                                                            false,
+                                                            false,
+                                                            true
+                                                    )
+                                            );
+                                        },
+
+                                        AnimationEvent.Side.SERVER
+                                ),
+                                AnimationEvent.InTimeEvent.create(
+                                        0.9f,
+
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+/*
+                                            ItemStack weapon = entity.getMainHandItem();
+
+                                            int sweepingLevel = EnchantmentHelper.getTagEnchantmentLevel(
+                                                    Enchantments.SWEEPING_EDGE,
+                                                    weapon
+
+                                            );
+                                            if  (sweepingLevel == 0) {
+                                                return;
+                                            }
+
+ */
+
+
+
+
+                                            entity.addEffect(
+                                                    new MobEffectInstance(
+                                                            MobEffects.MOVEMENT_SPEED,
+                                                            300,
+                                                            2,
+                                                            false,
+                                                            false,
+                                                            true
+                                                    )
+                                            );
+                                        },
+
+                                        AnimationEvent.Side.SERVER
+                                ),
+                                AnimationEvent.InTimeEvent.create(
+                                        0.9f,
+
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+
+                                            entity.addEffect(
+                                                    new MobEffectInstance(
+                                                            MobEffects.REGENERATION,
+                                                            350, 0, false, false, true
+                                                    )
+                                            );
+                                        }, AnimationEvent.Side.SERVER
+                                )
+                        )
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(
+                                        0.85f,
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+
+                                            double radius = 1.5D;
+
+                                            int particleCount = 80;
+
+                                            DustParticleOptions yellowDust =
+                                                    new DustParticleOptions(
+                                                            new Vector3f(1.0F, 1.0F, 0.0F),
+                                                            1.0F
+                                                    );
+
+                                            for (int i = 0; i < particleCount; i++) {
+
+                                                double angle =
+                                                        (Math.PI * 2.0D / particleCount) * i;
+
+                                                double x =
+                                                        entity.getX() + Math.cos(angle) * radius;
+
+                                                double z =
+                                                        entity.getZ() + Math.sin(angle) * radius;
+
+                                                double y = entity.getY() + 0.05D;
+
+                                                entity.level().addParticle(
+                                                        yellowDust,
+
+                                                        x,
+                                                        y,
+                                                        z,
+
+                                                        0.0D,
+                                                        0.0D,
+                                                        0.0D
+                                                );
+                                            }
+                                        },
+                                        AnimationEvent.Side.CLIENT
+                                ),
+                                AnimationEvent.InTimeEvent.create(
+                                        1.05f,
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+
+                                            double radius = 2.5D;
+
+                                            int particleCount = 80;
+
+                                            DustParticleOptions yellowDust =
+                                                    new DustParticleOptions(
+                                                            new Vector3f(1.0F, 1.0F, 0.0F),
+                                                            1.0F
+                                                    );
+
+                                            for (int i = 0; i < particleCount; i++) {
+
+                                                double angle =
+                                                        (Math.PI * 2.0D / particleCount) * i;
+
+                                                double x =
+                                                        entity.getX() + Math.cos(angle) * radius;
+
+                                                double z =
+                                                        entity.getZ() + Math.sin(angle) * radius;
+
+                                                double y = entity.getY() + 0.05D;
+
+                                                entity.level().addParticle(
+                                                        yellowDust,
+
+                                                        x,
+                                                        y,
+                                                        z,
+
+                                                        0.0D,
+                                                        0.0D,
+                                                        0.0D
+                                                );
+                                            }
+                                        },
+                                        AnimationEvent.Side.CLIENT
+                                )
+                        )
+        );
 
         BLACKSTAR_DFB_WINDUP = builder.nextAccessor("biped/skill/blackstar_dfb_windup", ac ->
                 new StaticAnimation(1.2F, false, ac, biped)
@@ -186,21 +464,19 @@ public class WOMPAnimations {
 
         BLACKSTAR_DFB_RELEASE = builder.nextAccessor("biped/skill/blackstar_dfb_release", (accessor) ->
                 new BasicMultipleAttackAnimation(0.12F, 0.05F, 0.2F, 0.4F, 0.50F, WOMWeaponColliders.BLACKSTAR_HEAD, biped.get().toolR, accessor, biped)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(20F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.GUARD_PUNCTURE,WOMDamageType.BLACKOUT))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false));
 
         BLACKSTAR_COUNTERATTACK = builder.nextAccessor("biped/skill/blackstar_counterattack", (accessor) ->
-                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.42f, 0.6f, 0.7F, null, biped.get().toolR, accessor, biped)
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.32f, 0.5f, 0.7F, null, biped.get().toolR, accessor, biped)
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(1.4f))
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
-                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.4F))
-                        .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE,EpicFightParticles.AIR_BURST)
                         .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
@@ -351,7 +627,7 @@ public class WOMPAnimations {
                         new AttackAnimation.Phase(0.0f, 0.55f, 0.55f, 0.6f, 2.2f, 0.6f, InteractionHand.MAIN_HAND, biped.get().toolR, null)
                                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.2F))
                                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE,StunType.HOLD)
-                                .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND,EpicFightSounds.WHOOSH_BIG.get())
+                                .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get())
                                 .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.5F))
                         ,
 
@@ -424,7 +700,7 @@ public class WOMPAnimations {
                                 ).params(new Vec3f(1.0F, -0.25F, -2.0F), Armatures.BIPED.get().rootJoint, 3.0D, 4.0F))
                         .addEvents(AnimationProperty.StaticAnimationProperty.ON_BEGIN_EVENTS, AnimationEvent.SimpleEvent.create(
                                 (e, s, p) ->
-                                        e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 25, 60 )), AnimationEvent.Side.SERVER
+                                        e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY, 25, 60 )), AnimationEvent.Side.SERVER
                         ))
                         .addEvents(
                                 AnimationEvent.InPeriodEvent.create(
@@ -433,9 +709,6 @@ public class WOMPAnimations {
                                         (e, s, p) -> {
 
                                             var entity = e.getOriginal();
-                                            if (entity == null) {
-                                                return;
-                                            }
 
                                             RandomSource random = RandomSource.create();
 
@@ -702,7 +975,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
 
         GREATAXE_AIRSLASH = builder.nextAccessor("biped/combat/greataxe_scissors", (accessor) ->
-                new AirSlashAnimation(0.12F, 0.65F, 0.7F, 1.27F, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, accessor, biped)
+                new AirSlashAnimation(0.12F, 0.65F, 0.7F, 1.27F, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, accessor, biped)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_RUSH_FINISHER.get())
@@ -779,7 +1052,7 @@ public class WOMPAnimations {
                                 ).params(new Vec3f(-1.0F, -0.25F, -3.0F), Armatures.BIPED.get().rootJoint, 3.0D, 4.0F))
                         .addEvents(AnimationProperty.StaticAnimationProperty.ON_BEGIN_EVENTS, AnimationEvent.SimpleEvent.create(
                                 (e, s, p) ->
-                                        e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 35, 60 )), AnimationEvent.Side.SERVER
+                                        e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY, 35, 60 )), AnimationEvent.Side.SERVER
                         ))
                         .addEvents(
                                 AnimationEvent.InPeriodEvent.create(
@@ -788,9 +1061,6 @@ public class WOMPAnimations {
                                         (e, s, p) -> {
 
                                             var entity = e.getOriginal();
-                                            if (entity == null) {
-                                                return;
-                                            }
 
                                             RandomSource random = RandomSource.create();
 
@@ -1127,7 +1397,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 10;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
                                                 double xOffset = 0;
                                                 double yOffset = 0;
                                                 double zOffset = 0;
@@ -1346,7 +1615,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.FINISHER, EpicFightDamageTypeTags.IS_MAGIC, DamageTypeTags.BYPASSES_RESISTANCE, WOMDamageType.BLACKOUT))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.MOVE_VERTICAL, false)
                         .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
@@ -1387,7 +1656,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.FINISHER, EpicFightDamageTypeTags.IS_MAGIC, DamageTypeTags.BYPASSES_RESISTANCE))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.MOVE_VERTICAL, false)
                         .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
@@ -1409,8 +1678,8 @@ public class WOMPAnimations {
                                         , AnimationEvent.Side.SERVER))
         );
 
-        EVIL_ODACHI_BATTOJUTSO = builder.nextAccessor("biped/skill/evil_odachi_battojutso", ac ->
-                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.20f, 0.71f, 0.8f, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, ac, biped)
+        EVIL_ODACHI_BATTOJUTSU = builder.nextAccessor("biped/skill/evil_odachi_battojutso", ac ->
+                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.20f, 0.71f, 0.8f, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, ac, biped)
 
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_SHOOT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.FIREWORK_ROCKET_BLAST)
@@ -1422,7 +1691,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
@@ -1458,8 +1727,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 3;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
-
                                                 RandomSource random = RandomSource.create();
                                                 float L = -0.1F;
                                                 float R = 0.1F;
@@ -1522,7 +1789,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE, EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.FINISHER, EpicFightDamageTypeTags.EXECUTION, EpicFightDamageTypeTags.UNBLOCKALBE))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true) // remove if fault
                         .addProperty(AnimationProperty.AttackAnimationProperty.MOVE_VERTICAL, false)
@@ -1617,7 +1884,7 @@ public class WOMPAnimations {
                                     }
 
                                     if (ModList.get().isLoaded("wom")) {
-                                        Particle particle = Minecraft.getInstance().particleEngine.createParticle(
+                                        Minecraft.getInstance().particleEngine.createParticle(
                                                 WOMParticles.BLACK_LASER.get(), worldX, worldY, worldZ,
                                                 worldX + boneForwardX * beamRange,
                                                 worldY + boneForwardY * beamRange,
@@ -1631,7 +1898,7 @@ public class WOMPAnimations {
                                 AnimationProperty.StaticAnimationProperty.ON_BEGIN_EVENTS,
                                 AnimationEvent.SimpleEvent.create(
                                         (e, s, p) ->
-                                                e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 4, 2)), AnimationEvent.Side.SERVER
+                                                e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY, 4, 2)), AnimationEvent.Side.SERVER
                                 )));
 
         EVIL_TACHI_NEW_DFB_WINDUP = builder.nextAccessor("biped/skill/evil_tachi_new_dfb_windup", ac ->
@@ -1668,7 +1935,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.FINISHER, DamageTypeTags.BYPASSES_RESISTANCE, WOMDamageType.BLACKOUT))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.MOVE_VERTICAL, false)
                         .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
@@ -1775,7 +2042,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE, EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.UNBLOCKALBE))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true) // remove if fault
                         .addProperty(AnimationProperty.AttackAnimationProperty.MOVE_VERTICAL, false)
@@ -1885,7 +2152,7 @@ public class WOMPAnimations {
                                     }
 
                                     if (ModList.get().isLoaded("wom")) {
-                                        Particle particle = Minecraft.getInstance().particleEngine.createParticle(
+                                        Minecraft.getInstance().particleEngine.createParticle(
                                                 WOMParticles.BLACK_LASER.get(), worldX, worldY, worldZ,
                                                 worldX + boneForwardX * beamRange,
                                                 worldY + boneForwardY * beamRange,
@@ -1899,11 +2166,11 @@ public class WOMPAnimations {
                                 AnimationProperty.StaticAnimationProperty.ON_BEGIN_EVENTS,
                                 AnimationEvent.SimpleEvent.create(
                                         (e, s, p) ->
-                                                e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 20, 2)), AnimationEvent.Side.SERVER
+                                                e.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.getDelegate(), 20, 2)), AnimationEvent.Side.SERVER
                                 )));
 
         EVIL_TACHI_NEW_BATTOJUTSO = builder.nextAccessor("biped/skill/evil_tachi_new_battojutso", ac ->
-                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.20f, 0.71f, 0.9f, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, ac, biped)
+                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.20f, 0.71f, 0.9f, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, ac, biped)
 
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_SHOOT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.FIREWORK_ROCKET_BLAST)
@@ -1915,7 +2182,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE,EpicFightDamageTypeTags.GUARD_PUNCTURE))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
@@ -1951,8 +2218,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 3;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
-
                                                 RandomSource random = RandomSource.create();
                                                 float L = -0.1F;
                                                 float R = 0.1F;
@@ -2048,7 +2313,7 @@ public class WOMPAnimations {
         );
 
         EVIL_TACHI_NEW_AIRSLASH_SKILL = builder.nextAccessor("biped/skill/evil_tachi_new_airslash_skill", ac ->
-                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.57f, 0.81f, 0.99f, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, ac, biped)
+                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.57f, 0.81f, 0.99f, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, ac, biped)
 
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_SHOOT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.FIREWORK_ROCKET_BLAST)
@@ -2059,7 +2324,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
                         .addProperty(AnimationProperty.AttackAnimationProperty.RESET_PLAYER_COMBO_COUNTER, false)
@@ -2100,8 +2365,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 3;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
-
                                                 RandomSource random = RandomSource.create();
                                                 float L = -0.1F;
                                                 float R = 0.1F;
@@ -2154,7 +2417,7 @@ public class WOMPAnimations {
 
         );
         EVIL_TACHI_NEW_AIRSLASH_SKILL2 = builder.nextAccessor("biped/skill/evil_tachi_new_airslash_skill2", ac ->
-                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.2f, 0.45f, 0.7f, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, ac, biped)
+                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.2f, 0.45f, 0.7f, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, ac, biped)
 
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_SHOOT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.FIREWORK_ROCKET_BLAST)
@@ -2165,7 +2428,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE))
                         .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
+                        .addState(EntityState.LOOK_TARGET, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_HEAD_ROTATION, true)
                         .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
                         .addProperty(AnimationProperty.AttackAnimationProperty.RESET_PLAYER_COMBO_COUNTER, false)
@@ -2206,8 +2469,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 3;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
-
                                                 RandomSource random = RandomSource.create();
                                                 float L = -0.1F;
                                                 float R = 0.1F;
@@ -2456,7 +2717,7 @@ public class WOMPAnimations {
 
                                     entity.addEffect(
                                             new MobEffectInstance(
-                                                    WOMPEffects.IMPREGNABILITY.get(),
+                                                    WOMPEffects.IMPREGNABILITY.getDelegate(),
                                                     400, 0, false, false, true
                                             )
                                     );

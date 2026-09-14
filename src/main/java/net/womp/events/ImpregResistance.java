@@ -4,27 +4,27 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.womp.WomPLUS;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
+import net.womp.WOMPlus;
 import net.womp.effect.WOMPEffects;
 import net.womp.skill.WOMPSkills;
-import yesman.epicfight.api.forgeevent.EntityStunEvent;
+import yesman.epicfight.api.event.EpicFightEventHooks;
+import yesman.epicfight.api.event.types.entity.ApplyStunEvent;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.StunType;
 
-import java.util.Objects;
-
-@Mod.EventBusSubscriber(modid = WomPLUS.MODID,bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = WOMPlus.MODID)
 public class ImpregResistance {
 
     @SubscribeEvent
-    public static void resistance(LivingDamageEvent event) {
-        var effectInstance = event.getEntity().getEffect(WOMPEffects.IMPREGNABILITY.get());
+    public static void applyResistance(LivingIncomingDamageEvent event) {
+        var effectInstance = event.getEntity().getEffect(WOMPEffects.IMPREGNABILITY.getDelegate());
 
         if (effectInstance != null && !event.isCanceled()) {
             float originalAmount = event.getAmount();
@@ -37,36 +37,39 @@ public class ImpregResistance {
         }
     }
 
-    @SubscribeEvent
-    public static void onStun(EntityStunEvent event) {
-        LivingEntity entity = event.getStunnedEntityPatch().getOriginal();
+    public static void onStun(ApplyStunEvent event) {
+        LivingEntity entity = event.getEntityPatch().getOriginal();
         StunType stunType = event.getStunType();
-        if (entity.hasEffect(WOMPEffects.IMPREGNABILITY.get()) && stunType != StunType.NEUTRALIZE) {
-            event.setCanceled(true);
+        if (entity.hasEffect(WOMPEffects.IMPREGNABILITY.getDelegate()) && stunType != StunType.NEUTRALIZE) {
+            event.setStunTime(0);
+            event.setSTunAnimation(null);
         }
     }
 
+    public static void applyEpicFightHooks() {
+        EpicFightEventHooks.Entity.APPLY_STUN.registerEvent(ImpregResistance::onStun);
+    }
+
     @SubscribeEvent
-    public static void onKB(LivingKnockBackEvent event) {
+    public static void onKnockback(LivingKnockBackEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(WOMPEffects.IMPREGNABILITY.get())) {
+        if (entity.hasEffect(WOMPEffects.IMPREGNABILITY.getDelegate())) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void onEquipMentChange(LivingEquipmentChangeEvent event) {
-        if (event.getSlot().equals(EquipmentSlot.MAINHAND) && event.getEntity().hasEffect(WOMPEffects.IMPREGNABILITY.get())) {
+    public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
+        if (event.getSlot().equals(EquipmentSlot.MAINHAND) && event.getEntity().hasEffect(WOMPEffects.IMPREGNABILITY.getDelegate())) {
             LivingEntity target = event.getEntity();
             if (target instanceof ServerPlayer player) {
                 ServerPlayerPatch playerPatch = EpicFightCapabilities.getServerPlayerPatch(player);
                 if (playerPatch != null) {
                     if (!playerPatch.getAdvancedHoldingItemCapability(InteractionHand.MAIN_HAND).isEmpty()
-                            && !Objects.equals(playerPatch.getAdvancedHoldingItemCapability(InteractionHand.MAIN_HAND)
-                            .getInnateSkill(playerPatch, playerPatch.getValidItemInHand(InteractionHand.MAIN_HAND)), WOMPSkills.RAAAHHH)
+                            && !(playerPatch.getAdvancedHoldingItemCapability(InteractionHand.MAIN_HAND).getInnateSkill(playerPatch, playerPatch.getValidItemInHand(InteractionHand.MAIN_HAND)) == WOMPSkills.RAAAHHH.get())
 
                     ) {
-                        target.removeEffect(WOMPEffects.IMPREGNABILITY.get());
+                        target.removeEffect(WOMPEffects.IMPREGNABILITY.getDelegate());
                     }
                 }
             }

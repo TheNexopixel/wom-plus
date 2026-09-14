@@ -1,104 +1,162 @@
 package net.womp.skill.compat;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.womp.WomPLUS;
-import net.womp.gameasset.animation.WOMPAnimations;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.IEventBus;
+import net.womp.gameassets.animation.WOMPAnimations;
 import net.womp.world.capabilities.item.WOMPWeaponCategories;
 import reascer.wom.world.item.WOMItems;
-import yesman.epicfight.api.client.forgeevent.WeaponCategoryIconRegisterEvent;
-import yesman.epicfight.api.forgeevent.SkillBuildEvent;
+import yesman.epicfight.api.client.event.EpicFightClientEventHooks;
+import yesman.epicfight.api.client.event.types.registry.RegisterWeaponCategoryIconEvent;
+import yesman.epicfight.api.event.EpicFightEventHooks;
+import yesman.epicfight.api.event.types.registry.SkillBuilderModificationEvent;
+import yesman.epicfight.compat.ICompatModule;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.registry.entries.EpicFightSkills;
 import yesman.epicfight.skill.guard.GuardSkill;
-import yesman.epicfight.skill.guard.ParryingSkill;
 import yesman.epicfight.skill.passive.SwordmasterSkill;
 
 import java.util.List;
 
+public class EpicFightSkillCompat implements ICompatModule {
 
-@Mod.EventBusSubscriber(modid = WomPLUS.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class EpicFightSkillCompat {
-    public static void forceGuard(SkillBuildEvent bus) {
-    }
-
-    @SubscribeEvent
-    public static void onGuardSkillCreate(SkillBuildEvent.ModRegistryWorker.SkillCreateEvent<GuardSkill.Builder> event) {
-        if (event.getRegistryName().equals(ResourceLocation.fromNamespaceAndPath("epicfight", "guard"))) {
-            GuardSkill.Builder builder = event.getSkillBuilder();
-            builder.addGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT)
-            .addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED);
-
-            builder.addGuardMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> Animations.GREATSWORD_GUARD_BREAK);
-
-            builder.addGuardMotion(WOMPWeaponCategories.BLACKSTAR, (item, player) -> WOMPAnimations.BLACKSTAR_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.BLACKSTAR, (item, player) -> WOMPAnimations.BLACKSTAR_NEUTRALIZED);
-
-            builder.addGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.LONGSWORD_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED);
-
-        }
-    }
-    @SubscribeEvent
-    public static void onImpactGuardSkillCreate(SkillBuildEvent.ModRegistryWorker.SkillCreateEvent<GuardSkill.Builder> event) {
-        if (event.getRegistryName().equals(ResourceLocation.fromNamespaceAndPath("epicfight", "impact_guard"))) {
-            GuardSkill.Builder builder = event.getSkillBuilder();
-            builder.addGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED);
-
-            builder.addGuardMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> Animations.GREATSWORD_GUARD_BREAK);
-
-            builder.addGuardMotion(WOMPWeaponCategories.BLACKSTAR, (item, player) -> WOMPAnimations.BLACKSTAR_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.BLACKSTAR, (item, player) -> WOMPAnimations.BLACKSTAR_NEUTRALIZED);
-
-            builder.addGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.LONGSWORD_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED);
-
-        }
-    }
-    @SubscribeEvent
-    public static void onSwordSkillCreate(SkillBuildEvent.ModRegistryWorker.SkillCreateEvent<SwordmasterSkill.Builder> event) {
-        if (event.getRegistryName().equals(ResourceLocation.fromNamespaceAndPath("epicfight","swordmaster"))) {
-            SwordmasterSkill.Builder builder = event.getSkillBuilder();
-            builder.addAvailableWeaponCategory(WOMPWeaponCategories.HOLLOW_LONGSWORD);
-            builder.addAvailableWeaponCategory(WOMPWeaponCategories.EVIL_TACHI);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onParrySkillCreate(SkillBuildEvent.ModRegistryWorker.SkillCreateEvent<ParryingSkill.Builder> event) {
-        if (event.getRegistryName().equals(ResourceLocation.fromNamespaceAndPath("epicfight", "parrying"))) {
-            GuardSkill.Builder builder = event.getSkillBuilder();
-            builder.addGuardMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE, (item, player) -> Animations.GREATSWORD_GUARD_BREAK);
-
-            builder.addGuardMotion(WOMPWeaponCategories.BLACKSTAR, (item, player) -> WOMPAnimations.BLACKSTAR_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.BLACKSTAR, (item, player) -> WOMPAnimations.BLACKSTAR_NEUTRALIZED);
-
-
-            builder.addGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED)
-                    .addAdvancedGuardMotion(WOMPWeaponCategories.EVIL_TACHI, (item, player) -> List.of(WOMPAnimations.EVIL_ODACHI_PARRY1, WOMPAnimations.EVIL_ODACHI_PARRY2));
-
-            builder.addGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.LONGSWORD_GUARD_HIT)
-                    .addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
-                    .addAdvancedGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD, (item, player) -> List.of(Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.SWORD_GUARD_ACTIVE_HIT3,Animations.SWORD_GUARD_ACTIVE_HIT1));
-
-        }
-    }
-    @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public static void onIconCreate(WeaponCategoryIconRegisterEvent icon){
-        icon.registerCategory(WOMPWeaponCategories.EVIL_TACHI, new ItemStack(WOMItems.EVIL_TACHI.get()));
-        icon.registerCategory(WOMPWeaponCategories.HOLLOW_LONGSWORD, new ItemStack(WOMItems.HOLLOW_LONGSWORD.get()));
-        icon.registerCategory(WOMPWeaponCategories.BLACKSTAR, new ItemStack(WOMItems.BLACKSTAR.get()));
-        icon.registerCategory(WOMPWeaponCategories.WOM_GREATAXE, new ItemStack(WOMItems.IRON_GREATAXE.get()));
-
+    public static void registerIcon(RegisterWeaponCategoryIconEvent event) {
+        event.registerCategory(WOMPWeaponCategories.EVIL_TACHI, new ItemStack(WOMItems.EVIL_TACHI.get()));
+        event.registerCategory(WOMPWeaponCategories.HOLLOW_LONGSWORD, new ItemStack(WOMItems.HOLLOW_LONGSWORD.get()));
+        event.registerCategory(WOMPWeaponCategories.WOM_GREATAXE, new ItemStack(WOMItems.IRON_GREATAXE.get()));
+        event.registerCategory(WOMPWeaponCategories.BLACKSTAR, new ItemStack(WOMItems.BLACKSTAR.get()));
     }
 
+    public static void onSwordMasterSkillCreate(SkillBuilderModificationEvent event) {
+        if (event.getRegistryName().equals(EpicFightSkills.SWORD_MASTER.getId())) {
+            if (event.getSkillBuilder() instanceof SwordmasterSkill.Builder builder) {
+                builder
+                        .addAvailableWeaponCategory(WOMPWeaponCategories.EVIL_TACHI)
+                        .addAvailableWeaponCategory(WOMPWeaponCategories.HOLLOW_LONGSWORD)
+                ;
+            }
+        }
+    }
+
+    public static void onGuardSkillcreate(SkillBuilderModificationEvent event) {
+        if (event.getRegistryName().equals(EpicFightSkills.GUARD.getId())) {
+            if (event.getSkillBuilder() instanceof GuardSkill.Builder builder) {
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.BLACKSTAR,
+                        (i, p) -> Animations.SPEAR_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.BLACKSTAR,
+                        (i, p) -> Animations.BIPED_COMMON_NEUTRALIZED);
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.WOM_GREATAXE,
+                        (i, p) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE,
+                        (i, p) -> Animations.GREATSWORD_GUARD_BREAK);
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                        (i, p) -> Animations.LONGSWORD_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                        (i, p) -> Animations.BIPED_COMMON_NEUTRALIZED);
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.EVIL_TACHI,
+                        (i, p) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI,
+                        (i, p) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED);
+
+            }
+        }
+    }
+
+
+    public static void onImpactGuardSkillcreate(SkillBuilderModificationEvent event) {
+        if (event.getRegistryName().equals(EpicFightSkills.IMPACT_GUARD.getId())) {
+            if (event.getSkillBuilder() instanceof GuardSkill.Builder builder) {
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.BLACKSTAR,
+                        (i, p) -> Animations.SPEAR_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.BLACKSTAR,
+                        (i, p) -> Animations.BIPED_COMMON_NEUTRALIZED);
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.WOM_GREATAXE,
+                        (i, p) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE,
+                        (i, p) -> Animations.GREATSWORD_GUARD_BREAK);
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                        (i, p) -> Animations.LONGSWORD_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                        (i, p) -> Animations.BIPED_COMMON_NEUTRALIZED);
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.EVIL_TACHI,
+                        (i, p) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI,
+                        (i, p) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED);
+            }
+        }
+    }
+
+    public static void onParrySkillCreate(SkillBuilderModificationEvent event) {
+        if (event.getRegistryName().equals(EpicFightSkills.PARRYING.getId())) {
+            if (event.getSkillBuilder() instanceof GuardSkill.Builder builder) {
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.BLACKSTAR,
+                        (i, p) -> Animations.SPEAR_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.BLACKSTAR,
+                        (i, p) -> Animations.BIPED_COMMON_NEUTRALIZED);
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.WOM_GREATAXE,
+                        (i, p) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE,
+                        (i, p) -> Animations.GREATSWORD_GUARD_BREAK);
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                        (i, p) -> Animations.LONGSWORD_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                        (i, p) -> Animations.BIPED_COMMON_NEUTRALIZED
+                ).addAdvancedGuardMotion(WOMPWeaponCategories.HOLLOW_LONGSWORD,
+                        (i, p) -> List.of(Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.LONGSWORD_GUARD_ACTIVE_HIT1, Animations.SWORD_GUARD_ACTIVE_HIT3,Animations.SWORD_GUARD_ACTIVE_HIT1));
+
+                builder.addGuardMotion(
+                        WOMPWeaponCategories.EVIL_TACHI,
+                        (i, p) -> WOMPAnimations.EVIL_ODACHI_GUARD_HIT
+                ).addGuardBreakMotion(WOMPWeaponCategories.EVIL_TACHI,
+                        (i, p) -> WOMPAnimations.EVIL_ODACHI_NEUTRALIZED
+                ).addAdvancedGuardMotion(WOMPWeaponCategories.EVIL_TACHI,
+                        (i, p) -> List.of(WOMPAnimations.EVIL_ODACHI_PARRY1, WOMPAnimations.EVIL_ODACHI_PARRY2));
+            }
+        }
+    }
+
+    @Override
+    public void onModEventBus(IEventBus iEventBus) {
+    }
+
+    @Override
+    public void onGameEventBus(IEventBus iEventBus) {
+        EpicFightEventHooks.Registry.MODIFY_SKILL_BUILDER.registerEvent(EpicFightSkillCompat::onGuardSkillcreate, 2);
+        EpicFightEventHooks.Registry.MODIFY_SKILL_BUILDER.registerEvent(EpicFightSkillCompat::onImpactGuardSkillcreate, 4);
+        EpicFightEventHooks.Registry.MODIFY_SKILL_BUILDER.registerEvent(EpicFightSkillCompat::onParrySkillCreate, 4);
+        EpicFightEventHooks.Registry.MODIFY_SKILL_BUILDER.registerEvent(EpicFightSkillCompat::onSwordMasterSkillCreate, 2);
+    }
+
+    @Override
+    public void onModEventBusClient(IEventBus iEventBus) {
+    }
+
+    @Override
+    public void onGameEventBusClient(IEventBus iEventBus) {
+        EpicFightClientEventHooks.Registry.WEAPON_CATEGORY_ICON.registerEvent(EpicFightSkillCompat::registerIcon);
+    }
 }
