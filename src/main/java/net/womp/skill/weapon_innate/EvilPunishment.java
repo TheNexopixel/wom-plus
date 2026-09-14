@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class EvilPunishment extends WeaponInnateSkill {
 
-    private static final float STAMINA_COST = 6.0F;
+    protected float stamina_consumption;
 
     private final Map<AnimationManager.AnimationAccessor<? extends StaticAnimation>, AnimationManager.AnimationAccessor<? extends AttackAnimation>> comboAnimation = Maps.newHashMap();
 
@@ -30,11 +30,21 @@ public class EvilPunishment extends WeaponInnateSkill {
     }
 
     @Override
+    public void loadDatapackParameters(CompoundTag parameters) {
+        this.stamina_consumption = parameters.getFloat("stamina_consumption");
+    }
+
+    @Override
     public void onInitiate(SkillContainer container, EntityEventListener listener) {
         super.onInitiate(container, listener);
         listener.registerEvent(Player.CONSUME_SKILL, (event) -> {
             if (event.getSkill() == container.getSkill() && container.getExecutor().getOriginal().isSprinting()) {
-                event.setResourceType(Resource.NONE);
+                if (!container.getExecutor().getOriginal().isCreative()) {
+                    event.setResourceType(Resource.STAMINA);
+                    event.setAmount(this.stamina_consumption);
+                } else {
+                    event.setResourceType(Resource.NONE);
+                }
                 container.activate();
             }
         }, this);
@@ -55,10 +65,6 @@ public class EvilPunishment extends WeaponInnateSkill {
                 }
             }
         } else {
-            if (!player.getOriginal().isCreative()) {
-                player.consumeForSkill(this, Resource.STAMINA, STAMINA_COST);
-            }
-
             player.playAnimationSynchronized(WOMPAnimations.EVIL_TACHI_NEW_BATTOJUTSO, 0.0F);
         }
         super.executeOnServer(container, args);

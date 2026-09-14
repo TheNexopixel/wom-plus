@@ -1,4 +1,5 @@
 {
   "consumption" : 40,
+  "stamina_consumption" : 6,
   "max_stacks" : 6
 }
