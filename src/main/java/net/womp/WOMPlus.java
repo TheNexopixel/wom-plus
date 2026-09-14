@@ -26,12 +26,9 @@ import yesman.epicfight.world.capabilities.item.WeaponCategory;
 import java.nio.file.Path;
 import java.util.Optional;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(WOMPlus.MODID)
 public class WOMPlus {
-    // Define mod id in a common place for everything to reference
     public static final String MODID = "womplus";
-    // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public WOMPlus(IEventBus modEventBus) {

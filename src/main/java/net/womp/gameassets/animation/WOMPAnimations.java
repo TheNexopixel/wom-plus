@@ -12,6 +12,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
 import net.womp.api.animation.AnimUtils;
@@ -50,6 +53,20 @@ import static net.womp.api.animation.JointTrack.getJointWithTranslation;
 
 
 public class WOMPAnimations {
+
+    // NOVA
+
+    public static AnimationManager.AnimationAccessor<StaticAnimation> NOVA_ONEHAND_IDLE;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AUTO1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AUTO2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AUTO3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AUTO4;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_DASH;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_AIRSLASH;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> NOVA_ONEHAND_DFB_WINDUP;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NOVA_ONEHAND_DFB_RELEASE;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> NOVA_ASTRAL_ACCELERATION;
+
 
     // BLACKSTAR
     public static AnimationManager.AnimationAccessor<StaticAnimation> BLACKSTAR_DFB_WINDUP;
@@ -157,6 +174,283 @@ public class WOMPAnimations {
 
     public static void build(AnimationManager.AnimationBuilder builder) {
         Armatures.ArmatureAccessor<HumanoidArmature> biped = Armatures.BIPED;
+
+
+        NOVA_ONEHAND_IDLE = builder.nextAccessor("biped/living/nova_onehand_idle", ac ->
+                new StaticAnimation(0.12F, true, ac, biped));
+
+
+        NOVA_ONEHAND_AUTO1 = builder.nextAccessor("biped/combat/nova_onehand_auto1", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.3f, 0.46f, 0.7F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_AUTO2 = builder.nextAccessor("biped/combat/nova_onehand_auto2", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.3f, 0.46f, 0.7F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_AUTO3 = builder.nextAccessor("biped/combat/nova_onehand_auto3", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.3f, 0.46f, 0.7F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_AUTO4 = builder.nextAccessor("biped/combat/nova_onehand_auto4", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.4f, 0.56f, 0.7F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(1.4f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.352f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_DASH = builder.nextAccessor("biped/combat/nova_onehand_dash", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.3f, 0.4f, 0.9F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(0.9f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(20f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.152f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_AIRSLASH = builder.nextAccessor("biped/combat/nova_onehand_airslash", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.0f, 0.25f, 0.43f, 0.9F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.adder(0.9f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.452f))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
+
+        NOVA_ONEHAND_DFB_WINDUP = builder.nextAccessor("biped/skill/nova_onehand_dfb_windup", ac ->
+                new StaticAnimation(1.2F, false, ac, biped)
+                        .newConditionalTimePair((entitypatch) -> entitypatch.getOriginal().isUsingItem() ? 0 : 1, 0.0F, Float.MAX_VALUE)
+                        .addConditionalState(0, EntityState.UPDATE_LIVING_MOTION, false)
+                        .addConditionalState(1, EntityState.UPDATE_LIVING_MOTION, true)
+                        .newTimePair(0.0F, Float.MAX_VALUE).addStateRemoveOld(EntityState.CAN_SWITCH_HAND_ITEM, false)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.FIXED_HEAD_ROTATION, true)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false)
+        );
+
+        NOVA_ONEHAND_DFB_RELEASE = builder.nextAccessor("biped/skill/nova_onehand_dfb_release", (accessor) ->
+                new BasicMultipleAttackAnimation(0.12F, 0.05F, 0.05F, 0.3F, 0.50F, null, biped.get().toolR, accessor, biped)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(10F))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.GUARD_PUNCTURE,WOMDamageType.BLACKOUT))
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                        .addState(EntityState.TURNING_LOCKED, true)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, false));
+
+        NOVA_ASTRAL_ACCELERATION = builder.nextAccessor("biped/skill/astral_acceleration", ac ->
+                new ActionAnimation(0.12F, ac, biped)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.93f, (e, s, p) ->
+                                                e.getOriginal().level().playSound(
+                                                        null,
+                                                        e.getOriginal().blockPosition(),
+                                                        EpicFightSounds.WHOOSH_SHARP.get(),
+                                                        SoundSource.PLAYERS,
+                                                        1.8F,
+                                                        1.8F
+                                                )
+
+                                        , AnimationEvent.Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.45f, (e, s, p) ->
+                                                e.getOriginal().level().playSound(
+                                                        null,
+                                                        e.getOriginal().blockPosition(),
+                                                        EpicFightSounds.WHOOSH_BIG.get(),
+                                                        SoundSource.PLAYERS,
+                                                        1.2F,
+                                                        1.1F
+                                                )
+
+                                        , AnimationEvent.Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(
+                                        0.9f,
+
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+/*
+                                            ItemStack weapon = entity.getMainHandItem();
+
+                                            int sweepingLevel = EnchantmentHelper.getTagEnchantmentLevel(
+                                                    Enchantments.SWEEPING_EDGE,
+                                                    weapon
+                                            );
+
+                                            int amplifier = 0 + sweepingLevel;
+*/
+                                            entity.addEffect(
+                                                    new MobEffectInstance(
+                                                            MobEffects.DIG_SPEED,
+                                                            400,
+                                                            2,
+                                                            false,
+                                                            false,
+                                                            true
+                                                    )
+                                            );
+                                        },
+
+                                        AnimationEvent.Side.SERVER
+                                ),
+                                AnimationEvent.InTimeEvent.create(
+                                        0.9f,
+
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+/*
+                                            ItemStack weapon = entity.getMainHandItem();
+
+                                            int sweepingLevel = EnchantmentHelper.getTagEnchantmentLevel(
+                                                    Enchantments.SWEEPING_EDGE,
+                                                    weapon
+
+                                            );
+                                            if  (sweepingLevel == 0) {
+                                                return;
+                                            }
+
+ */
+
+
+
+
+                                            entity.addEffect(
+                                                    new MobEffectInstance(
+                                                            MobEffects.MOVEMENT_SPEED,
+                                                            300,
+                                                            2,
+                                                            false,
+                                                            false,
+                                                            true
+                                                    )
+                                            );
+                                        },
+
+                                        AnimationEvent.Side.SERVER
+                                ),
+                                AnimationEvent.InTimeEvent.create(
+                                        0.9f,
+
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+
+                                            entity.addEffect(
+                                                    new MobEffectInstance(
+                                                            MobEffects.REGENERATION,
+                                                            350, 0, false, false, true
+                                                    )
+                                            );
+                                        }, AnimationEvent.Side.SERVER
+                                )
+                        )
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(
+                                        0.85f,
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+
+                                            double radius = 1.5D;
+
+                                            int particleCount = 80;
+
+                                            DustParticleOptions yellowDust =
+                                                    new DustParticleOptions(
+                                                            new Vector3f(1.0F, 1.0F, 0.0F),
+                                                            1.0F
+                                                    );
+
+                                            for (int i = 0; i < particleCount; i++) {
+
+                                                double angle =
+                                                        (Math.PI * 2.0D / particleCount) * i;
+
+                                                double x =
+                                                        entity.getX() + Math.cos(angle) * radius;
+
+                                                double z =
+                                                        entity.getZ() + Math.sin(angle) * radius;
+
+                                                double y = entity.getY() + 0.05D;
+
+                                                entity.level().addParticle(
+                                                        yellowDust,
+
+                                                        x,
+                                                        y,
+                                                        z,
+
+                                                        0.0D,
+                                                        0.0D,
+                                                        0.0D
+                                                );
+                                            }
+                                        },
+                                        AnimationEvent.Side.CLIENT
+                                ),
+                                AnimationEvent.InTimeEvent.create(
+                                        1.05f,
+                                        (e, s, p) -> {
+
+                                            LivingEntity entity = e.getOriginal();
+
+                                            double radius = 2.5D;
+
+                                            int particleCount = 80;
+
+                                            DustParticleOptions yellowDust =
+                                                    new DustParticleOptions(
+                                                            new Vector3f(1.0F, 1.0F, 0.0F),
+                                                            1.0F
+                                                    );
+
+                                            for (int i = 0; i < particleCount; i++) {
+
+                                                double angle =
+                                                        (Math.PI * 2.0D / particleCount) * i;
+
+                                                double x =
+                                                        entity.getX() + Math.cos(angle) * radius;
+
+                                                double z =
+                                                        entity.getZ() + Math.sin(angle) * radius;
+
+                                                double y = entity.getY() + 0.05D;
+
+                                                entity.level().addParticle(
+                                                        yellowDust,
+
+                                                        x,
+                                                        y,
+                                                        z,
+
+                                                        0.0D,
+                                                        0.0D,
+                                                        0.0D
+                                                );
+                                            }
+                                        },
+                                        AnimationEvent.Side.CLIENT
+                                )
+                        )
+        );
 
         BLACKSTAR_DFB_WINDUP = builder.nextAccessor("biped/skill/blackstar_dfb_windup", ac ->
                 new StaticAnimation(1.2F, false, ac, biped)

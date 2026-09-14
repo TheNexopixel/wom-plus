@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import reascer.wom.gameasset.animations.weapons.AnimsNova;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.skill.guard.DreadFullBusterSkill;
 import yesman.epicfight.api.animation.AnimationManager;
@@ -25,6 +26,9 @@ public class BusterMixin {
         if (capabilityItem.getWeaponCollider() == WOMPCollider.BLACKSTAR) {
             cir.setReturnValue(WOMPAnimations.BLACKSTAR_DFB_WINDUP);
         }
+        if (capabilityItem.getWeaponCollider() == WOMWeaponColliders.NOVA) {
+            cir.setReturnValue (capabilityItem.getStyle(playerPatch) == CapabilityItem.Styles.TWO_HAND ? AnimsNova.NOVA_BUSTER_WINDUP : WOMPAnimations.NOVA_ONEHAND_DFB_WINDUP);
+        }
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -35,6 +39,9 @@ public class BusterMixin {
         }
         if (capabilityItem.getWeaponCollider() == WOMPCollider.BLACKSTAR) {
             cir.setReturnValue(WOMPAnimations.BLACKSTAR_DFB_RELEASE);
+        }
+        if (capabilityItem.getWeaponCollider() == WOMWeaponColliders.NOVA) {
+            cir.setReturnValue (capabilityItem.getStyle(playerPatch) == CapabilityItem.Styles.TWO_HAND ? AnimsNova.NOVA_BUSTER_RELEASE : WOMPAnimations.NOVA_ONEHAND_DFB_RELEASE);
         }
     }
 

@@ -3,8 +3,11 @@ package net.womp.world.capabilities.item;
 import net.womp.WOMPlus;
 import net.womp.gameassets.animation.WOMPAnimations;
 import net.womp.skill.WOMPSkills;
+import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSkills;
 import reascer.wom.gameasset.animations.weapons.AnimsBlackstar;
+import reascer.wom.gameasset.animations.weapons.AnimsNova;
+import reascer.wom.gameasset.animations.weapons.AnimsRuine;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.ex_cap.data.Moveset;
 import yesman.epicfight.gameasset.Animations;
@@ -61,7 +64,6 @@ public final class WOMPMovesets
                     AnimsBlackstar.BLACKSTAR_ATTACK_2,
                     AnimsBlackstar.BLACKSTAR_ATTACK_3,
                     AnimsBlackstar.BLACKSTAR_ATTACK_4,
-                    WOMPAnimations.EVIL_TACHI_NEW_AUTO1,
                     AnimsBlackstar.BLACKSTAR_CHOCKNWAVE,
                     AnimsBlackstar.BLACKSTAR_GRAVITY
             )
@@ -71,6 +73,37 @@ public final class WOMPMovesets
             .addLivingMotionModifier(LivingMotions.BLOCK, Animations.SPEAR_GUARD)
             .setPassiveSkill(WOMSkills.UNBREAKABLE_PASSIVE)
             .addInnateSkill((itemStack, playerPatch) -> WOMSkills.UNBREAKBLE.get())
+    );
+    public static final DeferredMoveset NOVA_2H = REGISTRY.registerMoveset("nova_2h", () -> Moveset.builder()
+            .addComboAttacks(
+                    AnimsNova.NOVA_ATTACK_1,
+                    AnimsNova.NOVA_ATTACK_2,
+                    AnimsNova.NOVA_ATTACK_3,
+                    AnimsNova.NOVA_ATTACK_4,
+                    AnimsNova.NOVA_ATTACK_DASH,
+                    AnimsNova.NOVA_ATTACK_AIRSLASH
+            )
+            .addLivingMotionModifier(LivingMotions.IDLE, AnimsNova.NOVA_IDLE)
+            .addLivingMotionModifier(LivingMotions.WALK, AnimsNova.NOVA_WALK)
+            .addLivingMotionModifier(LivingMotions.RUN, AnimsNova.NOVA_RUN)
+            .addLivingMotionModifier(LivingMotions.BLOCK, AnimsNova.NOVA_GUARD_HOLD)
+            .addInnateSkill((itemStack, playerPatch) -> WOMSkills.FLASH_MUTILATION.get())
+    );
+
+    public static final DeferredMoveset NOVA_1H = REGISTRY.registerMoveset("nova_1h", () -> Moveset.builder()
+            .addComboAttacks(
+                    WOMPAnimations.NOVA_ONEHAND_AUTO1,
+                    WOMPAnimations.NOVA_ONEHAND_AUTO2,
+                    WOMPAnimations.NOVA_ONEHAND_AUTO3,
+                    WOMPAnimations.NOVA_ONEHAND_AUTO4,
+                    WOMPAnimations.NOVA_ONEHAND_DASH,
+                    WOMPAnimations.NOVA_ONEHAND_AIRSLASH
+            )
+            .addLivingMotionModifier(LivingMotions.IDLE, WOMPAnimations.NOVA_ONEHAND_IDLE)
+            .addLivingMotionModifier(LivingMotions.WALK, AnimsBlackstar.BLACKSTAR_WALK)
+            .addLivingMotionModifier(LivingMotions.RUN, WOMAnimations.STAFF_RUN)
+            .addLivingMotionModifier(LivingMotions.BLOCK, AnimsRuine.RUINE_GUARD)
+            .addInnateSkill((itemStack, playerPatch) -> WOMPSkills.ASTRAL_ACCELERATION.get())
     );
 
     public static final DeferredMoveset GREATAXE_1H = REGISTRY.registerMoveset("greataxe_1h", () -> Moveset.builder()

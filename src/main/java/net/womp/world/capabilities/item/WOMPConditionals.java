@@ -15,4 +15,8 @@ public class WOMPConditionals {
             "dual_greataxes",
             () -> ProviderConditional.createWeaponCategory(CapabilityItem.Styles.TWO_HAND, WOMPWeaponCategories.WOM_GREATAXE, InteractionHand.OFF_HAND, true)
     );
+    public static final DeferredConditional DUAL_NOVA = REGISTRY.registerConditional(
+            "nova_dual",
+            () -> ProviderConditional.createWeaponCategory(CapabilityItem.Styles.TWO_HAND, WOMPWeaponCategories.NOVA, InteractionHand.OFF_HAND, true)
+    );
 }

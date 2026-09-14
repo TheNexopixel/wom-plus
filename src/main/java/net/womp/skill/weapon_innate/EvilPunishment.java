@@ -32,6 +32,8 @@ public class EvilPunishment extends WeaponInnateSkill {
     @Override
     public void loadDatapackParameters(CompoundTag parameters) {
         this.stamina_consumption = parameters.getFloat("stamina_consumption");
+
+        super.loadDatapackParameters(parameters);
     }
 
     @Override

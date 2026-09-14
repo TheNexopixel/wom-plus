@@ -7,6 +7,7 @@
   "weapon_category.epicfight.hollow_longsword": "Hollow Longsword",
   "weapon_category.epicfight.wom_greataxe": "Greataxes",
   "weapon_category.epicfight.blackstar": "Blackstar",
+  "epicfight.weapon_category.nova": "Nova",
 
   "skill.womplus.evil_beam":"Evil Beam",
   "skill.womplus.evil_beam.tooltip":"Unleash a beam of demonic energy on your attackers!",
@@ -18,6 +19,8 @@
   "skill.womplus.comet.tooltip":"Soar into the air and strike down upon your opponents with a devastating hit.",
   "skill.womplus.rahhh":"RRAAAAHHR",
   "skill.womplus.rahhh.tooltip":"\n\nGives effect that increases: \n  - Defence \n  - Attack Speed by 10% \n  - Stamina Regen \n  - Impact",
+  "skill.womplus.astral_acceleration":"Astral Acceleration",
+  "skill.womplus.astral_acceleration.tooltip":"You are given a magical acceleration. You also gain Regeneration.",
 
   "pack.wom_override.title": "WOM Capability Override",
   "pack.womplus_trailpack.title": "WomPlus WeaponTrail Pack"

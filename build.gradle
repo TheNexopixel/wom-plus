@@ -138,7 +138,7 @@ dependencies {
     implementation "maven.modrinth:vu3NZ5Ma:8HHhJt6i"
     implementation "maven.modrinth:oWx9p4ug:9A6sb3T8"
 
-    implementation "curse.maven:epicfight-nightfall-1307848:8573921"
+    compileOnly "curse.maven:epicfight-nightfall-1307848:8573921"
     implementation "maven.modrinth:cdaWrTra:kQ8bnlol"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository

@@ -50,6 +50,19 @@ public class WOMPItemCapabilitesPreset {
                     .addConditionals(EpicFightProviderConditionals.DEFAULT_2H_WIELD_STYLE)
                     .addMoveset(CapabilityItem.Styles.TWO_HAND, WOMPMovesets.BLACKSTAR));
 
+    public static final DeferredWeapon NOVA = REGISTRY.registerWeapon("nova", () ->
+            WeaponCapability.builder()
+                    .category(WOMPWeaponCategories.NOVA)
+                    .collider(WOMWeaponColliders.NOVA)
+                    .swingSound(EpicFightSounds.WHOOSH)
+                    .hitParticle(EpicFightParticles.HIT_BLADE)
+                    .hitSound(EpicFightSounds.BLADE_HIT)
+                    .canBePlacedOffhand(true)
+                    .addConditionals(EpicFightProviderConditionals.DEFAULT_1H_WIELD_STYLE, WOMPConditionals.DUAL_NOVA)
+                    .addMoveset(CapabilityItem.Styles.ONE_HAND, WOMPMovesets.NOVA_1H)
+                    .addMoveset(CapabilityItem.Styles.TWO_HAND, WOMPMovesets.NOVA_2H)
+    );
+
     public static final DeferredWeapon GREATAXE = REGISTRY.registerWeapon("greataxe", () ->
             WeaponCapability.builder()
                     .category(WOMPWeaponCategories.WOM_GREATAXE)

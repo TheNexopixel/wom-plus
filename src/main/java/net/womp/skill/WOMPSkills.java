@@ -4,6 +4,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.womp.WOMPlus;
 import net.womp.gameassets.animation.WOMPAnimations;
+import net.womp.skill.weapon_innate.AstralAccelerationSkill;
 import net.womp.skill.weapon_innate.EvilBeam;
 import net.womp.skill.weapon_innate.EvilPunishment;
 import net.womp.skill.weapon_innate.RAHHHHH;
@@ -59,6 +60,10 @@ public class WOMPSkills {
             .build(key));
 
     public static final DeferredHolder<Skill, RAHHHHH> RAAAHHH = REGISTRY.register("rahhh", key -> RAHHHHH.createWeaponInnateBuilder(RAHHHHH::new)
+            .setCategory(SkillCategories.WEAPON_INNATE)
+            .build(key));
+
+    public static final DeferredHolder<Skill, AstralAccelerationSkill> ASTRAL_ACCELERATION = REGISTRY.register("astral_acceleration", key -> AstralAccelerationSkill.createWeaponInnateBuilder(AstralAccelerationSkill::new)
             .setCategory(SkillCategories.WEAPON_INNATE)
             .build(key));
 }
