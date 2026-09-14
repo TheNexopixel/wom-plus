@@ -13,6 +13,4 @@ public class ModBusEvent {
     public static void registerAnimation(AnimationManager.AnimationRegistryEvent event) {
         event.newBuilder(WOMPlus.MODID, WOMPAnimationBuilder::buildAnimations);
     }
-
-
 }

@@ -24,7 +24,7 @@ public class WOMPCollider {
     public static final Collider EVIL_TACHI_BACK = registerCollider(ResourceLocation.fromNamespaceAndPath(WOMPlus.MODID,"evil_tachi_back"),new MultiOBBCollider(3, 0.35D, 0.35D, 0.6D, 0D, 0.0D, 0.7D));
     public static final Collider EVIL_TACHI_SPECIAL = registerCollider(ResourceLocation.fromNamespaceAndPath(WOMPlus.MODID,"evil_tachi_special"),new MultiOBBCollider(2, 0.55D, 0.65D, 0.6D, 0D, 0.3D, 0.45D));
     public static final Collider EVIL_TACHI_RAY = registerCollider(ResourceLocation.fromNamespaceAndPath(WOMPlus.MODID,"evil_tachi_ray"),new MultiOBBCollider(1, 0.4D, 0.4D, 10.5D, 0D, 1.0D, -11.4D));
-    public static final Collider EVIL_TACHI_BATTOJUTSO = registerCollider(ResourceLocation.fromNamespaceAndPath(WOMPlus.MODID,"backhand_innate"),new MultiOBBCollider(1, 1.8D, 1.0D, 2.1D, 0D, 1.5D, -0.4D));
+    public static final Collider EVIL_TACHI_BATTOJUTSU = registerCollider(ResourceLocation.fromNamespaceAndPath(WOMPlus.MODID,"backhand_innate"),new MultiOBBCollider(1, 1.8D, 1.0D, 2.1D, 0D, 1.5D, -0.4D));
     public static final Collider EVIL_TACHI_BUSTER_RELEASE = registerCollider(ResourceLocation.fromNamespaceAndPath(WOMPlus.MODID,"whirlwind2"),new MultiOBBCollider(1, 4.0D, 1.2D, 4.0D, 0D, 1.5D, 0.0D));
     public static final Collider SHIELD = registerCollider(ResourceLocation.fromNamespaceAndPath(WOMPlus.MODID,"shield"),new MultiOBBCollider(2, 0.45D, 0.55D, 0.75D, 0.0D, 0.15D, -0.35D));
     public static final Collider HOLLOW_LONGSWORD = registerCollider(ResourceLocation.fromNamespaceAndPath(WOMPlus.MODID,"bat"),new MultiOBBCollider(4, 0.4D, 0.4D, 1.13D, 0D, 0.0D, -1.23D));

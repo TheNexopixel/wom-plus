@@ -16,6 +16,4 @@ public class RAHHHHH extends WeaponInnateSkill {
         super.executeOnServer(container, args);
         container.getExecutor().playAnimationSynchronized(WOMPAnimations.RAAAHHHHH,0.1f);
     }
-
-
 }

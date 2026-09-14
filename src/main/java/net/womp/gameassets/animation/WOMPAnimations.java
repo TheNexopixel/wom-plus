@@ -76,7 +76,7 @@ public class WOMPAnimations {
     public static AnimationManager.AnimationAccessor<AirSlashAnimation> EVIL_ODACHI_AIRSLASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_BEAAAMMMM;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_COUNTER;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_BATTOJUTSO;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_BATTOJUTSU;
     public static AnimationManager.AnimationAccessor<ActionAnimation> EVIL_ODACHI_OVERHEADSLASH_CHARGE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> EVIL_ODACHI_OVERHEADSLASH_RELEASE;
 
@@ -415,9 +415,6 @@ public class WOMPAnimations {
                                         (e, s, p) -> {
 
                                             var entity = e.getOriginal();
-                                            if (entity == null) {
-                                                return;
-                                            }
 
                                             RandomSource random = RandomSource.create();
 
@@ -684,7 +681,7 @@ public class WOMPAnimations {
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true));
 
         GREATAXE_AIRSLASH = builder.nextAccessor("biped/combat/greataxe_scissors", (accessor) ->
-                new AirSlashAnimation(0.12F, 0.65F, 0.7F, 1.27F, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, accessor, biped)
+                new AirSlashAnimation(0.12F, 0.65F, 0.7F, 1.27F, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, accessor, biped)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_RUSH_FINISHER.get())
@@ -770,9 +767,6 @@ public class WOMPAnimations {
                                         (e, s, p) -> {
 
                                             var entity = e.getOriginal();
-                                            if (entity == null) {
-                                                return;
-                                            }
 
                                             RandomSource random = RandomSource.create();
 
@@ -1109,7 +1103,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 10;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
                                                 double xOffset = 0;
                                                 double yOffset = 0;
                                                 double zOffset = 0;
@@ -1391,8 +1384,8 @@ public class WOMPAnimations {
                                         , AnimationEvent.Side.SERVER))
         );
 
-        EVIL_ODACHI_BATTOJUTSO = builder.nextAccessor("biped/skill/evil_odachi_battojutso", ac ->
-                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.20f, 0.71f, 0.8f, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, ac, biped)
+        EVIL_ODACHI_BATTOJUTSU = builder.nextAccessor("biped/skill/evil_odachi_battojutso", ac ->
+                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.20f, 0.71f, 0.8f, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, ac, biped)
 
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_SHOOT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.FIREWORK_ROCKET_BLAST)
@@ -1440,8 +1433,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 3;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
-
                                                 RandomSource random = RandomSource.create();
                                                 float L = -0.1F;
                                                 float R = 0.1F;
@@ -1599,7 +1590,7 @@ public class WOMPAnimations {
                                     }
 
                                     if (ModList.get().isLoaded("wom")) {
-                                        Particle particle = Minecraft.getInstance().particleEngine.createParticle(
+                                        Minecraft.getInstance().particleEngine.createParticle(
                                                 WOMParticles.BLACK_LASER.get(), worldX, worldY, worldZ,
                                                 worldX + boneForwardX * beamRange,
                                                 worldY + boneForwardY * beamRange,
@@ -1867,7 +1858,7 @@ public class WOMPAnimations {
                                     }
 
                                     if (ModList.get().isLoaded("wom")) {
-                                        Particle particle = Minecraft.getInstance().particleEngine.createParticle(
+                                        Minecraft.getInstance().particleEngine.createParticle(
                                                 WOMParticles.BLACK_LASER.get(), worldX, worldY, worldZ,
                                                 worldX + boneForwardX * beamRange,
                                                 worldY + boneForwardY * beamRange,
@@ -1885,7 +1876,7 @@ public class WOMPAnimations {
                                 )));
 
         EVIL_TACHI_NEW_BATTOJUTSO = builder.nextAccessor("biped/skill/evil_tachi_new_battojutso", ac ->
-                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.20f, 0.71f, 0.9f, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, ac, biped)
+                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.20f, 0.71f, 0.9f, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, ac, biped)
 
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_SHOOT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.FIREWORK_ROCKET_BLAST)
@@ -1933,8 +1924,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 3;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
-
                                                 RandomSource random = RandomSource.create();
                                                 float L = -0.1F;
                                                 float R = 0.1F;
@@ -2030,7 +2019,7 @@ public class WOMPAnimations {
         );
 
         EVIL_TACHI_NEW_AIRSLASH_SKILL = builder.nextAccessor("biped/skill/evil_tachi_new_airslash_skill", ac ->
-                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.57f, 0.81f, 0.99f, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, ac, biped)
+                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.57f, 0.81f, 0.99f, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, ac, biped)
 
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_SHOOT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.FIREWORK_ROCKET_BLAST)
@@ -2082,8 +2071,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 3;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
-
                                                 RandomSource random = RandomSource.create();
                                                 float L = -0.1F;
                                                 float R = 0.1F;
@@ -2136,7 +2123,7 @@ public class WOMPAnimations {
 
         );
         EVIL_TACHI_NEW_AIRSLASH_SKILL2 = builder.nextAccessor("biped/skill/evil_tachi_new_airslash_skill2", ac ->
-                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.2f, 0.45f, 0.7f, WOMPCollider.EVIL_TACHI_BATTOJUTSO, biped.get().rootJoint, ac, biped)
+                new BasicMultipleAttackAnimation(0.1f, 0.2f, 0.2f, 0.45f, 0.7f, WOMPCollider.EVIL_TACHI_BATTOJUTSU, biped.get().rootJoint, ac, biped)
 
                         .addProperty(AnimationProperty.AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_SHOOT)
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.FIREWORK_ROCKET_BLAST)
@@ -2188,8 +2175,6 @@ public class WOMPAnimations {
                                             var entity = e.getOriginal();
                                             int numParticles = 3;
                                             for (int i = 0; i < numParticles; i++) {
-                                                if (entity == null) return;
-
                                                 RandomSource random = RandomSource.create();
                                                 float L = -0.1F;
                                                 float R = 0.1F;

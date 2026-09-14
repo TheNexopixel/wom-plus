@@ -2,18 +2,19 @@ package net.womp.skill.weapon_innate;
 
 import com.google.common.collect.Maps;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionHand;
 import net.womp.gameassets.animation.WOMPAnimations;
-import net.womp.skill.WOMPSkills;
 import yesman.epicfight.api.animation.AnimationManager;
+import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.api.event.EntityEventListener;
+import yesman.epicfight.api.event.EpicFightEventHooks.Player;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.Map;
 import java.util.Objects;
@@ -28,76 +29,44 @@ public class EvilPunishment extends WeaponInnateSkill {
         super(builder);
     }
 
-    private boolean injectedStack = false;
-
     @Override
-    public boolean canExecute(SkillContainer container) {
-        PlayerPatch<?> player = container.getExecutor();
-
-        if (player.getOriginal().isSprinting()
-                && Objects.equals(player.getAdvancedHoldingItemCapability(InteractionHand.MAIN_HAND)
-                .getInnateSkill(player, player.getValidItemInHand(InteractionHand.MAIN_HAND)), WOMPSkills.EVIL_PUNISHMENT))
-        {
-
-            if (// container.getStack() <= 0
-             !player.getOriginal().isCreative()
-                    && player.getStamina() >= STAMINA_COST) {
-                container.setStack(container.getStack() +1);
-                injectedStack = true;
+    public void onInitiate(SkillContainer container, EntityEventListener listener) {
+        super.onInitiate(container, listener);
+        listener.registerEvent(Player.CONSUME_SKILL, (event) -> {
+            if (event.getSkill() == container.getSkill() && container.getExecutor().getOriginal().isSprinting()) {
+                event.setResourceType(Resource.NONE);
+                container.activate();
             }
-
-            return player.getStamina() >= STAMINA_COST;
-        }
-
-        return super.canExecute(container);
+        }, this);
     }
-
 
     @Override
     public void executeOnServer(SkillContainer container, CompoundTag args) {
-        AssetAccessor<? extends DynamicAnimation> animation = Objects.requireNonNull(container.getExecutor().getAnimator().getPlayerFor(null)).getAnimation();
-        if (this.comboAnimation.containsKey(animation)) {
-            container.getExecutor().playAnimationSynchronized(this.comboAnimation.get(animation), 0.0F);
-            super.executeOnServer(container, args);
-        }
+        ServerPlayerPatch player = container.getServerExecutor();
 
-        PlayerPatch<?> player = container.getServerExecutor();
+        if (!player.getOriginal().isSprinting()) {
+            if (player.getAnimator().getPlayerFor(null) instanceof AnimationPlayer animPlayer
+                    && !animPlayer.isEmpty()) {
+                AssetAccessor<? extends DynamicAnimation> animation = animPlayer.getAnimation().get().getAccessor();
 
-        if (player.getOriginal().isSprinting()
-                && Objects.equals(player.getAdvancedHoldingItemCapability(InteractionHand.MAIN_HAND)
-                .getInnateSkill(player, player.getValidItemInHand(InteractionHand.MAIN_HAND)), WOMPSkills.EVIL_PUNISHMENT))
-        {
-
-            if (!player.getOriginal().isCreative()){
-
-                player.setStamina(player.getStamina() - STAMINA_COST);
+                if (this.comboAnimation.containsKey(animation.get().getAccessor())) {
+                    player.playAnimationSynchronized(this.comboAnimation.get((AssetAccessor<? extends  DynamicAnimation>)animation), 0.0F);
+                    super.executeOnServer(container, args);
+                }
+            }
+        } else {
+            if (!player.getOriginal().isCreative()) {
+                player.consumeForSkill(this, Resource.STAMINA, STAMINA_COST);
             }
 
-            player.playAnimationSynchronized(
-                    WOMPAnimations.EVIL_TACHI_NEW_BATTOJUTSO,
-                    0.0F
-            );
-
-            if (!injectedStack) {
-                container.setStack(
-                        Math.min(
-                                container.getStack() + 1,
-                                container.getSkill().getMaxStack()
-                        )
-                );
-            }
-
-            injectedStack = false;
-            return;
+            player.playAnimationSynchronized(WOMPAnimations.EVIL_TACHI_NEW_BATTOJUTSO, 0.0F);
         }
-
         super.executeOnServer(container, args);
     }
     @Override
     public boolean checkExecuteCondition(SkillContainer container) {
         EntityState playerState = container.getExecutor().getEntityState();
-
-        return this.comboAnimation.containsKey(Objects.requireNonNull(container.getExecutor().getAnimator().getPlayerFor(null)).getAnimation()) && playerState.canUseSkill() && playerState.inaction();
+        return container.getExecutor().getOriginal().isSprinting() || this.comboAnimation.containsKey(Objects.requireNonNull(container.getExecutor().getAnimator().getPlayerFor(null)).getAnimation().get().getAccessor()) && playerState.canUseSkill() && playerState.inaction();
     }
 
     @Override
@@ -120,7 +89,6 @@ public class EvilPunishment extends WeaponInnateSkill {
                 WOMPAnimations.EVIL_TACHI_NEW_AUTO4,
                 WOMPAnimations.EVIL_TACHI_NEW_AUTO4_SKILL
         );
-
         this.comboAnimation.put(
                 WOMPAnimations.EVIL_TACHI_NEW_AIRSLASH,
                 WOMPAnimations.EVIL_TACHI_NEW_AIRSLASH_SKILL
@@ -137,7 +105,6 @@ public class EvilPunishment extends WeaponInnateSkill {
                 WOMPAnimations.EVIL_TACHI_NEW_BATTOJUTSO,
                 WOMPAnimations.EVIL_TACHI_NEW_BATTOJUTSO_SKILL
         );
-
         return this;
     }
 }

@@ -26,7 +26,7 @@ public class WOMSkillCompat implements ICompatModule {
                         (i, p) -> WOMPAnimations.GREATAXE_ONEHAND_GUARD_HIT
                 ).addGuardBreakMotion(WOMPWeaponCategories.WOM_GREATAXE,
                         (i, p) -> Animations.GREATSWORD_GUARD_BREAK
-                ).addAdvancedGuardMotion(WOMPWeaponCategories.BLACKSTAR,
+                ).addAdvancedGuardMotion(WOMPWeaponCategories.WOM_GREATAXE,
                         (i, p) -> WOMPAnimations.GREATAXE_ONEHAND_AIRSLASH);
 
 

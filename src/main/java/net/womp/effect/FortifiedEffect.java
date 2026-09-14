@@ -17,7 +17,6 @@ public class FortifiedEffect extends MobEffect {
         if (!(entity instanceof Player)) {
             return false;
         }
-
         return super.applyEffectTick(entity, amplifier);
     }
 

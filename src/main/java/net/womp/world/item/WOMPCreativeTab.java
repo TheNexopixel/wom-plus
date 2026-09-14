@@ -15,11 +15,8 @@ public class WOMPCreativeTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, WOMPlus.MODID);
 
-    public static final Supplier<CreativeModeTab> WOMPLUS = CREATIVE_MODE_TABS.register("womplus", () -> CreativeModeTab.builder().icon(() ->
-                    new
-                            ItemStack(WOMItems.EVIL_TACHI.get()))
+    public static final Supplier<CreativeModeTab> WOMPLUS = CREATIVE_MODE_TABS.register("womplus", () -> CreativeModeTab.builder().icon(() -> new ItemStack(WOMItems.EVIL_TACHI.get()))
             .title(Component.translatable("creativetab.womplus"))
-
             .displayItems((itemDisplayParameters, output) -> {
                 output.accept(WOMItems.EVIL_TACHI.get());
                 output.accept(WOMItems.NETHERITE_GREATAXE.get());
